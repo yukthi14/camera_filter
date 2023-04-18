@@ -11,6 +11,7 @@ import 'package:camera_filter/src/widgets/progressDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:glass/glass.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart' as video;
 import 'package:video_player/video_player.dart';
@@ -90,7 +91,7 @@ class _VideoPlayersState extends State<VideoPlayer> {
                             index = index - 1;
                           }
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_back_ios,
                           color: Colors.white,
                         )),
@@ -242,7 +243,8 @@ class _VideoPlayersState extends State<VideoPlayer> {
                                 });
                           }),
                     ],
-                  )),
+                  )
+          ),
           Positioned(
               bottom: 10,
               right: 10,

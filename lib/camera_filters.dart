@@ -1,7 +1,5 @@
 // ignore_for_file: must_be_immutable
 
-library camera_filter;
-
 import 'dart:async';
 import 'dart:math';
 
@@ -13,6 +11,8 @@ import 'package:camera_filter/src/widgets/circularProgress.dart';
 import 'package:camera_filter/videoPlayer.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:glass/glass.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 class CameraScreenPlugin extends StatefulWidget {
@@ -26,7 +26,6 @@ class CameraScreenPlugin extends StatefulWidget {
   List<Color>? filters;
 
   bool applyFilters;
-
 
   /// notify color to change
   ValueNotifier<Color>? filterColor;
@@ -69,9 +68,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
 
   /// local storage for mobile
   GetStorage sp = GetStorage();
-  double zoomLevel=1.0;
-
-
+  double zoomLevel = 1.0;
 
   /// flash mode changer
   ValueNotifier<int> flashCount = ValueNotifier(0);
@@ -122,13 +119,13 @@ class _CameraScreenState extends State<CameraScreenPlugin>
   ///filter color change function
   void _onFilterChanged(Color value) {
     setState(() {
-      rippleEffect=true;
+      rippleEffect = true;
     });
     widget.filterColor == null
         ? _filterColor.value = value
         : widget.filterColor!.value = value;
     Future.delayed(Duration(seconds: 2), () {
-      rippleEffect=false;
+      rippleEffect = false;
     });
   }
 
@@ -243,24 +240,22 @@ class _CameraScreenState extends State<CameraScreenPlugin>
           : Stack(
               children: [
                 Positioned(
+                  bottom: MediaQuery.of(context).size.height * 0.0001,
+                  top: MediaQuery.of(context).size.height * 0.045,
                   child: GestureDetector(
-                    onTap: (){
-                      if(zoomLevel==8.0){
-                      }
-                      else{
-                        zoomLevel+=0.2;
+                    onTap: () {
+                      if (zoomLevel == 8.0) {
+                      } else {
+                        zoomLevel += 0.2;
                         _controller?.setZoomLevel(zoomLevel);
                       }
                     },
-                    onDoubleTap: (){
-                      if(zoomLevel==1.0){
-
-                      }
-                      else{
-                        zoomLevel-=0.2;
+                    onDoubleTap: () {
+                      if (zoomLevel == 1.0) {
+                      } else {
+                        zoomLevel -= 0.2;
                         _controller?.setZoomLevel(zoomLevel);
                       }
-
                     },
                     child: FutureBuilder<void>(
                       future: _initializeControllerFuture,
@@ -288,7 +283,8 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                               });
                         } else {
                           /// Otherwise, display a loading indicator.
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
                       },
                     ),
@@ -306,7 +302,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                                 time.value == ""
                                     ? ""
                                     : formatHHMMSS(int.parse(time.value)),
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold),
@@ -331,8 +327,8 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                   child: widget.profileIconWidget ?? Container(),
                 ),
                 Positioned(
-                  left: MediaQuery.of(context).size.width * 0.01,
-                  top: 30.0,
+                  left: MediaQuery.of(context).size.width * 0.86,
+                  top: MediaQuery.of(context).size.height * 0.05,
                   child: Column(
                     children: [
                       /// icon for flash modes
@@ -363,14 +359,16 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                             builder: (context, value, Widget? c) {
                               return Icon(
                                 flashCount.value == 0
-                                    ? Icons.flash_off
+                                    ? Icons.flash_off_rounded
                                     : flashCount.value == 1
-                                        ? Icons.flash_on
-                                        : Icons.flash_auto,
+                                        ? Icons.flash_on_rounded
+                                        : Icons.flash_auto_rounded,
                                 color: Colors.white,
                               );
                             }),
-                      ),
+                      ).asGlass(
+                          tintColor: Colors.black,
+                          clipBorderRadius: BorderRadius.circular(100.0)),
                       SizedBox(
                         width: 5,
                       ),
@@ -378,7 +376,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                       /// camera change to front or back
                       IconButton(
                         icon: Icon(
-                          Icons.cameraswitch,
+                          Icons.cameraswitch_rounded,
                           color: Colors.white,
                         ),
                         onPressed: () {
@@ -391,50 +389,209 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                             _initCameraController(selectedCamera);
                           }
                         },
-                      ),
+                      ).asGlass(
+                          tintColor: Colors.black,
+                          clipBorderRadius: BorderRadius.circular(100.0)),
                       SizedBox(
-                        width: 5,
+                        width: 2,
                       ),
-                      ValueListenableBuilder(
-                          valueListenable: cameraChange,
-                          builder: (context, value, Widget? c) {
-                            return IconButton(
-                              icon: Icon(
-                                cameraChange.value == false
-                                    ? Icons.videocam
-                                    : Icons.camera,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                if (cameraChange.value == false) {
-                                  cameraChange.value = true;
-                                  _controller!.prepareForVideoRecording();
-                                } else {
-                                  cameraChange.value = false;
-                                }
-                              },
-                            );
-                          }),
+                      slide
+                          ? ValueListenableBuilder(
+                              valueListenable: cameraChange,
+                              builder: (context, value, Widget? c) {
+                                return IconButton(
+                                  icon: Icon(
+                                    cameraChange.value == false
+                                        ? Icons.videocam_rounded
+                                        : Icons.camera_alt_rounded,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    if (cameraChange.value == false) {
+                                      cameraChange.value = true;
+                                      _controller!.prepareForVideoRecording();
+                                    } else {
+                                      cameraChange.value = false;
+                                    }
+                                  },
+                                ).asGlass(
+                                    tintColor: Colors.black,
+                                    clipBorderRadius:
+                                        BorderRadius.circular(100.0));
+                              })
+                          : const SizedBox(),
+
+                      slide
+                          ? IconButton(
+                              onPressed: () {},
+                              color: Colors.white,
+                              icon: const Icon(Icons.music_note_rounded),
+                            ).asGlass(
+                              tintColor: Colors.black,
+                              clipBorderRadius: BorderRadius.circular(100.0))
+                          : const SizedBox(),
+
+                      slide
+                          ? IconButton(
+                              onPressed: () {},
+                              color: Colors.white,
+                              icon: const Icon(Icons.timer_rounded),
+                            ).asGlass(
+                              tintColor: Colors.black,
+                              clipBorderRadius: BorderRadius.circular(100.0))
+                          : const SizedBox(),
+
+                      slide
+                          ? IconButton(
+                              onPressed: () {},
+                              color: Colors.white,
+                              icon: const Icon(Icons.brightness_6_rounded),
+                            ).asGlass(
+                              tintColor: Colors.black,
+                              clipBorderRadius: BorderRadius.circular(100.0))
+                          : const SizedBox(),
+
+                      AnimatedContainer(
+                        margin: EdgeInsets.only(top: slide ? 30 : 0),
+                        duration: const Duration(milliseconds: 150),
+                        child: IconButton(
+                          icon: Icon(
+                            slide
+                                ? Icons.keyboard_arrow_up
+                                : Icons.keyboard_arrow_down,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              slide = !slide;
+                            });
+                          },
+                        ).asGlass(
+                            tintColor: Colors.black,
+                            clipBorderRadius: BorderRadius.circular(100.0)),
+                      ),
                     ],
                   ),
                 ),
                 Positioned(
-                  left: MediaQuery.of(context).size.width * 0.85,
-                  top: 30.0,
+                  left: MediaQuery.of(context).size.width * 0.01,
+                  top: MediaQuery.of(context).size.height * 0.05,
                   child: Row(
                     children: [
                       IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.close_rounded,
                           color: Colors.white,
                         ),
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                      ),
+                      ).asGlass(
+                          tintColor: Colors.black,
+                          clipBorderRadius: BorderRadius.circular(100.0)),
                     ],
                   ),
                 ),
+                Positioned(
+                    left: MediaQuery.of(context).size.width * 0.35,
+                    bottom: MediaQuery.of(context).size.height * 0.16,
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            if (zoomLevel == 8.0) {
+                            } else {
+                              zoomLevel += 0.2;
+                              _controller?.setZoomLevel(zoomLevel);
+                            }
+                          },
+                          child: SizedBox(
+                            child: Center(
+                                child: Text(
+                              "0.6x",
+                              style: TextStyle(color: Colors.white),
+                            )),
+                            width: MediaQuery.of(context).size.width * 0.09,
+                            height: MediaQuery.of(context).size.height * 0.04,
+                          ).asGlass(
+                              tintColor: Colors.transparent,
+                              clipBorderRadius: BorderRadius.circular(100.0)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6, right: 6),
+                          child: SizedBox(
+                            child: Center(
+                                child: Text(
+                              "1x",
+                              style: TextStyle(color: Colors.white),
+                            )),
+                            width: MediaQuery.of(context).size.width * 0.09,
+                            height: MediaQuery.of(context).size.height * 0.04,
+                          ).asGlass(
+                              tintColor: Colors.transparent,
+                              clipBorderRadius: BorderRadius.circular(50.0)),
+                        ),
+                        SizedBox(
+                          child: Center(
+                              child: Text(
+                            "2x",
+                            style: TextStyle(color: Colors.white),
+                          )),
+                          width: MediaQuery.of(context).size.width * 0.09,
+                          height: MediaQuery.of(context).size.height * 0.04,
+                        ).asGlass(
+                            tintColor: Colors.transparent,
+                            clipBorderRadius: BorderRadius.circular(100.0)),
+                      ],
+                    )),
+                Positioned(
+                    bottom: 120.0,
+                    child: Row(
+                      children: [
+                        ValueListenableBuilder(
+                          valueListenable: cameraChange,
+                          builder: (BuildContext context, bool value,
+                              Widget? child) {
+                            return IconButton(
+                                    icon: Icon(
+                                      cameraChange.value == false
+                                          ? Icons.photo_album_outlined
+                                          : Icons.video_camera_front,
+                                      color: Colors.white,
+                                      size: 25,
+                                    ),
+                                    onPressed: () async {
+                                      if (cameraChange.value == false) {
+                                        ImagePicker image = ImagePicker();
+                                        try {
+                                          XFile? filePath =
+                                              await image.pickImage(
+                                                  source: ImageSource.gallery);
+                                          print(filePath);
+                                        } catch (e) {
+                                          print(e);
+                                        }
+                                      } else {
+                                        ImagePicker image = ImagePicker();
+                                        try {
+                                          XFile? filePath =
+                                              await image.pickVideo(
+                                                  source: ImageSource.gallery);
+                                          print(filePath);
+                                        } catch (e) {
+                                          print(e);
+                                        }
+                                      }
+                                    })
+                                .asGlass(
+                                    tintColor: Colors.black,
+                                    clipBorderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(100),
+                                        bottomRight: Radius.circular(100)));
+                          },
+                        )
+                      ],
+                    )),
               ],
             ),
     );
@@ -622,7 +779,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                       rotation: _rotation * 3 - 45),
                 ],
                 Container(
-                  constraints: BoxConstraints.expand(),
+                  constraints: const BoxConstraints.expand(),
                   child: AnimatedSwitcher(
                     child: Container(
                       width: 70,
@@ -630,7 +787,9 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                       decoration: BoxDecoration(
                           color: Color(0xffd51820),
                           borderRadius: BorderRadius.circular(100)),
-                    ),
+                    ).asGlass(
+                        tintColor: Colors.transparent,
+                        clipBorderRadius: BorderRadius.circular(100.0)),
                     duration: Duration(milliseconds: 300),
                   ),
                   decoration: BoxDecoration(

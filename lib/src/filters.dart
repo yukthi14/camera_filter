@@ -358,7 +358,7 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
       ),
      ).asGlass(
       tintColor: Colors.transparent,
-        clipBorderRadius: BorderRadius.circular(20.0)
+        clipBorderRadius: BorderRadius.circular(100.0)
     );
   }
 
