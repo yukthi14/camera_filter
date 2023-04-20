@@ -1075,7 +1075,7 @@ class ImagePainterState extends State<ImagePainter> {
                 IconButton(
                   tooltip: textDelegate.clearAllProgress,
                   icon: widget.clearAllIcon ??
-                      Icon(Icons.clear, color: Colors.white),
+                      const Icon(Icons.clear, color: Colors.white),
                   onPressed: () {
                     setState(_paintHistory.clear);
                   },

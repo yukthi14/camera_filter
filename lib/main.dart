@@ -1,8 +1,6 @@
-import 'package:camera_filter/first_page.dart';
-import 'package:camera_filter/ripple_effect.dart';
+import 'package:camera_filter/homepage.dart';
 import 'package:flutter/material.dart';
 
-import 'camera_filters.dart';
 
 void main() {
   runApp(const MyApp());

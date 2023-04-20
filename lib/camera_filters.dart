@@ -5,10 +5,13 @@ import 'dart:math';
 
 import 'package:camera/camera.dart';
 import 'package:camera_filter/constant.dart';
+import 'package:camera_filter/song_list.dart';
 import 'package:camera_filter/src/edit_image_screen.dart';
 import 'package:camera_filter/src/filters.dart';
 import 'package:camera_filter/src/widgets/circularProgress.dart';
 import 'package:camera_filter/videoPlayer.dart';
+import 'package:circular_menu/circular_menu.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:glass/glass.dart';
@@ -236,7 +239,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
     return Material(
       color: Colors.black,
       child: _initializeControllerFuture == null
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Stack(
               children: [
                 Positioned(
@@ -366,9 +369,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                                 color: Colors.white,
                               );
                             }),
-                      ).asGlass(
-                          tintColor: Colors.black,
-                          clipBorderRadius: BorderRadius.circular(100.0)),
+                      ),
                       SizedBox(
                         width: 5,
                       ),
@@ -389,9 +390,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                             _initCameraController(selectedCamera);
                           }
                         },
-                      ).asGlass(
-                          tintColor: Colors.black,
-                          clipBorderRadius: BorderRadius.circular(100.0)),
+                      ),
                       SizedBox(
                         width: 2,
                       ),
@@ -400,45 +399,70 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                               valueListenable: cameraChange,
                               builder: (context, value, Widget? c) {
                                 return IconButton(
-                                  icon: Icon(
-                                    cameraChange.value == false
-                                        ? Icons.videocam_rounded
-                                        : Icons.camera_alt_rounded,
-                                    color: Colors.white,
-                                  ),
-                                  onPressed: () {
-                                    if (cameraChange.value == false) {
-                                      cameraChange.value = true;
-                                      _controller!.prepareForVideoRecording();
-                                    } else {
-                                      cameraChange.value = false;
-                                    }
-                                  },
-                                ).asGlass(
-                                    tintColor: Colors.black,
-                                    clipBorderRadius:
-                                        BorderRadius.circular(100.0));
+                                    icon: Icon(
+                                      cameraChange.value == false
+                                          ? Icons.videocam_rounded
+                                          : Icons.camera_alt_rounded,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: () {
+                                      if (cameraChange.value == false) {
+                                        setState(() {
+                                          slowMotion=false;
+                                          slide=false;
+                                        });
+                                        cameraChange.value = true;
+                                        _controller!.prepareForVideoRecording();
+                                      } else {
+                                        setState(() {
+                                          slowMotion=false;
+                                          slide=false;
+                                        });
+                                        cameraChange.value = false;
+                                      }
+                                    });
                               })
                           : const SizedBox(),
 
                       slide
                           ? IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    CupertinoDialogRoute(
+                                        transitionDuration: const Duration(milliseconds: 900),
+                                        transitionBuilder:
+                                            (context, animation, secondaryAnimation, child) {
+                                          const begin = Offset(0.0, 1.0);
+                                          const end = Offset.zero;
+                                          const curve = Curves.ease;
+
+                                          var tween = Tween(begin: begin, end: end)
+                                              .chain(CurveTween(curve: curve));
+
+                                          return SlideTransition(
+                                            position: animation.drive(tween),
+                                            child: child,
+                                          );
+                                        },
+                                        builder: (context) =>const SongList (),
+                                        context: context));
+                              },
                               color: Colors.white,
                               icon: const Icon(Icons.music_note_rounded),
-                            ).asGlass(
-                              tintColor: Colors.black,
-                              clipBorderRadius: BorderRadius.circular(100.0))
+                            )
                           : const SizedBox(),
 
                       slide
                           ? IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {
+                                  selectTimer = !selectTimer;
+                                });
+                              },
                               color: Colors.white,
                               icon: const Icon(Icons.timer_rounded),
-                            ).asGlass(
-                              tintColor: Colors.black,
-                              clipBorderRadius: BorderRadius.circular(100.0))
+                            )
                           : const SizedBox(),
 
                       slide
@@ -446,32 +470,46 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                               onPressed: () {},
                               color: Colors.white,
                               icon: const Icon(Icons.brightness_6_rounded),
-                            ).asGlass(
-                              tintColor: Colors.black,
-                              clipBorderRadius: BorderRadius.circular(100.0))
+                            )
+                          : const SizedBox(),
+
+                      slide
+                          ? IconButton(
+                              onPressed: () {},
+                              color: Colors.white,
+                              icon: const Icon(Icons.filter_alt_rounded),
+                            )
+                          : const SizedBox(),
+                      (slide&&cameraChange.value)
+                          ? IconButton(
+                              onPressed: () {},
+                              color: Colors.white,
+                              icon: const Icon(Icons.slow_motion_video_rounded),
+                            )
                           : const SizedBox(),
 
                       AnimatedContainer(
-                        margin: EdgeInsets.only(top: slide ? 30 : 0),
-                        duration: const Duration(milliseconds: 150),
-                        child: IconButton(
-                          icon: Icon(
-                            slide
-                                ? Icons.keyboard_arrow_up
-                                : Icons.keyboard_arrow_down,
-                            color: Colors.white,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              slide = !slide;
-                            });
-                          },
-                        ).asGlass(
-                            tintColor: Colors.black,
-                            clipBorderRadius: BorderRadius.circular(100.0)),
-                      ),
+                          margin: EdgeInsets.only(top: slide ? 5 : 0),
+                          duration: const Duration(milliseconds: 150),
+                          child: IconButton(
+                            icon: Icon(
+                              slide
+                                  ? Icons.keyboard_arrow_up
+                                  : Icons.keyboard_arrow_down,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                slide = !slide;
+                                selectTimer = false;
+                                slowMotion = false;
+                              });
+                            },
+                          )),
                     ],
-                  ),
+                  ).asGlass(
+                      tintColor: Colors.black,
+                      clipBorderRadius: BorderRadius.circular(100.0)),
                 ),
                 Positioned(
                   left: MediaQuery.of(context).size.width * 0.01,
@@ -488,9 +526,37 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                         },
                       ).asGlass(
                           tintColor: Colors.black,
-                          clipBorderRadius: BorderRadius.circular(100.0)),
+                          clipBorderRadius: BorderRadius.circular(100.0)
+
+                      ),
                     ],
                   ),
+                ),
+                Positioned(
+                  left: MediaQuery.of(context).size.width * 0.6,
+                  top: MediaQuery.of(context).size.height * 0.28,
+                  child: selectTimer
+                      ? Row(
+                          children: [
+                            IconButton(
+                              icon: const Icon(
+                                Icons.timer_10_rounded,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {},
+                            ),
+                            IconButton(
+                              icon: const Icon(
+                                Icons.timer_3_rounded,
+                                color: Colors.white,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ],
+                        ).asGlass(
+                          tintColor: Colors.black,
+                          clipBorderRadius: BorderRadius.circular(100.0))
+                      : const SizedBox(),
                 ),
                 Positioned(
                     left: MediaQuery.of(context).size.width * 0.35,
@@ -592,6 +658,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                         )
                       ],
                     )),
+
               ],
             ),
     );

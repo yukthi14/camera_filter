@@ -243,7 +243,9 @@ class _VideoPlayersState extends State<VideoPlayer> {
                                 });
                           }),
                     ],
-                  )
+                  ).asGlass(
+                      tintColor: Colors.black,
+                      clipBorderRadius: BorderRadius.circular(100.0)),
           ),
           Positioned(
               bottom: 10,
