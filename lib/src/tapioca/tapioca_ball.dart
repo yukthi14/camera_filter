@@ -3,12 +3,10 @@ import "dart:ui";
 
 /// TapiocaBall is a effect to apply to the video.
 abstract class TapiocaBall {
-  /// Creates a object to apply color filter from [Filters].
   static TapiocaBall filter(Filters filter) {
     return _Filter(filter);
   }
 
-  /// Creates a object to apply color filter from [Color].
   static TapiocaBall filterFromColor(Color color) {
     return _Filter.color(color);
   }
@@ -52,10 +50,12 @@ class _Filter extends TapiocaBall {
     this.color = '#${colorInstance.value.toRadixString(16).substring(2)}';
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {'type': color};
   }
 
+  @override
   String toTypeName() {
     return 'Filter';
   }
@@ -69,6 +69,7 @@ class _TextOverlay extends TapiocaBall {
   final Color color;
   _TextOverlay(this.text, this.x, this.y, this.size, this.color);
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       'text': text,
@@ -79,6 +80,7 @@ class _TextOverlay extends TapiocaBall {
     };
   }
 
+  @override
   String toTypeName() {
     return 'TextOverlay';
   }
@@ -90,10 +92,12 @@ class _ImageOverlay extends TapiocaBall {
   final int y;
   _ImageOverlay(this.bitmap, this.x, this.y);
 
+  @override
   Map<String, dynamic> toMap() {
     return {'bitmap': bitmap, 'x': x, 'y': y};
   }
 
+  @override
   String toTypeName() {
     return 'ImageOverlay';
   }

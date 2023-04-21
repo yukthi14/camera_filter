@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'dart:async';
 import 'dart:io';
 import 'dart:math';
@@ -17,14 +15,7 @@ import 'package:path_provider/path_provider.dart';
 import 'widgets/_range_slider.dart';
 import 'widgets/_text_dialog.dart';
 
-///[ImagePainter] widget.
-///this widget could call on any image
-///you can use this widget for image editing purpose
-///draw some paint on your image
-///write some text on your image
-///crop your image
-///font size increase or decrease
-///stroke with increase or decrease
+
 class ImagePainter extends StatefulWidget {
   ImagePainter._(
       {Key? key,
@@ -239,7 +230,6 @@ class ImagePainter extends StatefulWidget {
     );
   }
 
-  ///Constructor for loading image from [File].
   factory ImagePainter.file(
     File file, {
     required Key key,
@@ -290,7 +280,6 @@ class ImagePainter extends StatefulWidget {
     );
   }
 
-  ///Constructor for loading image from memory.
   factory ImagePainter.memory(
     Uint8List byteArray, {
     required Key key,
@@ -372,29 +361,21 @@ class ImagePainter extends StatefulWidget {
     );
   }
 
-  ///Only accessible through [ImagePainter.network] constructor.
   final String? networkUrl;
 
-  ///Only accessible through [ImagePainter.memory] constructor.
   final Uint8List? byteArray;
 
-  ///Only accessible through [ImagePainter.file] constructor.
   File? file;
 
-  ///Only accessible through [ImagePainter.asset] constructor.
   final String? assetPath;
 
-  ///Height of the Widget. Image is subjected to fit within the given height.
   final double? height;
 
-  ///Width of the widget. Image is subjected to fit within the given width.
   final double? width;
   final Function? onDone;
 
-  ///Widget to be shown during the conversion of provided image to [ui.Image].
   final Widget? placeHolder;
 
-  ///Defines whether the widget should be scaled or not. Defaults to [false].
   final bool? isScalable;
   final bool? applyFilters;
   final ColorFilter? filter;
@@ -405,8 +386,7 @@ class ImagePainter extends StatefulWidget {
   ///Signature mode background color
   final Color? signatureBackgroundColor;
 
-  ///List of colors for color selection
-  ///If not provided, default colors are used.
+
   final List<Color>? colors;
 
   final Widget? sendButtonWidget;
@@ -451,7 +431,7 @@ class ImagePainter extends StatefulWidget {
   ImagePainterState createState() => ImagePainterState();
 }
 
-///
+
 class ImagePainterState extends State<ImagePainter> {
   final _repaintKey = GlobalKey();
   ui.Image? _image;
@@ -515,7 +495,6 @@ class ImagePainterState extends State<ImagePainter> {
         ? PaintingStyle.stroke
         : _controller.value.paintStyle;
 
-  ///Converts the incoming image type from constructor to [ui.Image]
   Future<void> _resolveAndConvertImage() async {
     if (widget.networkUrl != null) {
       _image = await _loadNetworkImage(widget.networkUrl!);
@@ -552,8 +531,7 @@ class ImagePainterState extends State<ImagePainter> {
     }
   }
 
-  ///Dynamically sets stroke multiplier on the basis of widget size.
-  ///Implemented to avoid thin stroke on high res images.
+
   _setStrokeMultiplier() {
     if ((_image!.height + _image!.width) > 1000) {
       _strokeMultiplier = (_image!.height + _image!.width) ~/ 1000;
@@ -561,7 +539,6 @@ class ImagePainterState extends State<ImagePainter> {
     setState(() {});
   }
 
-  ///Completer function to convert asset or file image to [ui.Image] before drawing on custompainter.
   Future<ui.Image> _convertImage(Uint8List img) async {
     final completer = Completer<ui.Image>();
     ui.decodeImageFromList(img, (image) {
@@ -571,7 +548,6 @@ class ImagePainterState extends State<ImagePainter> {
     return completer.future;
   }
 
-  ///Completer function to convert network image to [ui.Image] before drawing on custompainter.
   Future<ui.Image> _loadNetworkImage(String path) async {
     final completer = Completer<ImageInfo>();
     var img = NetworkImage(path);
@@ -602,7 +578,6 @@ class ImagePainterState extends State<ImagePainter> {
     );
   }
 
-  ///paints image on given constrains for drawing if image is not null.
   Widget _paintImage() {
     return Scaffold(
       appBar: _buildControls(),
@@ -715,7 +690,7 @@ class ImagePainterState extends State<ImagePainter> {
                     },
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
-                    child: Icon(
+                    child: const Icon(
                       Icons.check,
                       size: 24.0,
                     ),
@@ -743,7 +718,7 @@ class ImagePainterState extends State<ImagePainter> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       },
     );
     RenderRepaintBoundary boundary =
@@ -818,7 +793,6 @@ class ImagePainterState extends State<ImagePainter> {
         ),
       );
 
-  ///Provides [ui.Image] of the recorded canvas to perform action.
   Future<ui.Image> _renderImage() async {
     final recorder = ui.PictureRecorder();
     final canvas = Canvas(recorder);
@@ -881,8 +855,7 @@ class ImagePainterState extends State<ImagePainter> {
     );
   }
 
-  ///Generates [Uint8List] of the [ui.Image] generated by the [renderImage()] method.
-  ///Can be converted to image file by writing as bytes.
+
   Future<Uint8List?> exportImage() async {
     late ui.Image _convertedImage;
     if (widget.isSignature) {
@@ -961,7 +934,7 @@ class ImagePainterState extends State<ImagePainter> {
 
   PreferredSize _buildControls() {
     return PreferredSize(
-      preferredSize: Size.fromHeight(kToolbarHeight),
+      preferredSize: const Size.fromHeight(kToolbarHeight),
       child: Container(
         padding: const EdgeInsets.all(4),
         color: Colors.black,
@@ -969,12 +942,12 @@ class ImagePainterState extends State<ImagePainter> {
           children: [
             IconButton(
               color: Colors.white,
-              icon: Icon(Icons.arrow_back),
+              icon: const Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.pop(context);
               },
             ),
-            Spacer(),
+            const Spacer(),
             widget.applyFilters == false
                 ? Container()
                 : ValueListenableBuilder<bool>(
@@ -995,7 +968,7 @@ class ImagePainterState extends State<ImagePainter> {
                         },
                       );
                     }),
-            SizedBox(
+            const SizedBox(
               width: 5,
             )
           ],
@@ -1008,8 +981,8 @@ class ImagePainterState extends State<ImagePainter> {
     return widget.applyFilters == false
         ? Container()
         : Container(
-            padding: EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-            decoration: BoxDecoration(
+            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+            decoration: const BoxDecoration(
                 color: Colors.black12,
                 borderRadius: BorderRadius.only(
                     bottomRight: Radius.circular(30),
@@ -1020,7 +993,7 @@ class ImagePainterState extends State<ImagePainter> {
                     valueListenable: _controller,
                     builder: (_, controller, __) {
                       return IconButton(
-                        icon: Icon(Icons.font_download_rounded,
+                        icon: const Icon(Icons.font_download_rounded,
                             color: Colors.white),
                         onPressed: () {
                           fonts.value = !fonts.value;
@@ -1032,14 +1005,14 @@ class ImagePainterState extends State<ImagePainter> {
                   shape: ContinuousRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  icon: Icon(Icons.format_size, color: Colors.white),
+                  icon: const Icon(Icons.format_size, color: Colors.white),
                   itemBuilder: (_) => [_showTextSlider()],
                 ),
                 ValueListenableBuilder<Controller>(
                     valueListenable: _controller,
                     builder: (_, controller, __) {
                       return IconButton(
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.color_lens_rounded,
                           color: Colors.white,
                         ),
@@ -1054,7 +1027,7 @@ class ImagePainterState extends State<ImagePainter> {
                     borderRadius: BorderRadius.circular(20),
                   ),
                   icon: widget.brushIcon ??
-                      Icon(Icons.brush, color: Colors.white),
+                      const Icon(Icons.brush, color: Colors.white),
                   itemBuilder: (_) => [_showRangeSlider()],
                 ),
                 IconButton(
@@ -1064,7 +1037,7 @@ class ImagePainterState extends State<ImagePainter> {
                     ),
                     onPressed: _openTextDialog),
                 IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.crop_rotate,
                     color: Colors.white,
                   ),
@@ -1085,7 +1058,6 @@ class ImagePainterState extends State<ImagePainter> {
           );
   }
 
-  // final cropKey = GlobalKey<CropState>();
   Future _cropImage() async {
     CroppedFile? croppedFile = await ImageCropper().cropImage(
         sourcePath: widget.file!.path,
@@ -1126,26 +1098,20 @@ class ImagePainterState extends State<ImagePainter> {
   }
 }
 
-///Gives access to manipulate the essential components like [strokeWidth], [Color] and [PaintMode].
 @immutable
 class Controller {
-  ///Tracks [strokeWidth] of the [Paint] method.
   final double strokeWidth;
   final double fontSize;
 
-  ///Tracks [Color] of the [Paint] method.
   final Color color;
 
-  ///Tracks [PaintingStyle] of the [Paint] method.
   final PaintingStyle paintStyle;
 
-  ///Tracks [PaintMode] of the current [Paint] method.
   final PaintMode mode;
 
   ///Any text.
   final String text;
 
-  ///Constructor of the [Controller] class.
   const Controller(
       {this.strokeWidth = 4.0,
       this.color = Colors.red,
@@ -1221,11 +1187,7 @@ class GradientCircularProgressIndicator extends StatelessWidget {
   final List<double>? gradientStops;
   final double? radius;
 
-  /// Constructor require progress [radius] & gradient color range [gradientColors]
-  /// , option includes: circle width [strokeWidth], round support [strokeRound]
-  /// , progress background [backgroundColor].
-  ///
-  /// set progress with [value], 0.0 to 1.0.
+
   GradientCircularProgressIndicator({
     this.strokeWidth = 10.0,
     this.strokeRound = false,

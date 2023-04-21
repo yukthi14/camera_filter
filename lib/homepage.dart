@@ -85,7 +85,7 @@ class _FirstPageState extends State<FirstPage> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     if (currentIndex == 0) {
-      return Container(
+      return SizedBox(
         width: width,
         height: height,
         child: Image.asset(

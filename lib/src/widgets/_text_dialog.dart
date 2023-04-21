@@ -11,7 +11,6 @@ class TextDialog extends StatelessWidget {
       required this.textDelegate})
       : super(key: key);
 
-  /// text editing controller of text put on image
   final TextEditingController controller;
 
   /// font size of text put on image
@@ -40,51 +39,11 @@ class TextDialog extends StatelessWidget {
             textDelegate: textDelegate,
           );
         });
-    // showDialog(
-    //     context: context,
-    //     builder: (context) {
-    //       return TextDialog(
-    //         controller: controller,
-    //         fontSize: fontSize,
-    //         onFinished: () => onFinished(context),
-    //         color: color,
-    //         textDelegate: textDelegate,
-    //       );
-    //     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Material(color: Colors.transparent, child: textField(context)
-
-        // Column(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   children: [
-        //     TextField(
-        //       controller: controller,
-        //       autofocus: true,
-        //       style: TextStyle(
-        //           fontSize: fontSize, fontWeight: FontWeight.bold, color: color),
-        //       textAlign: TextAlign.center,
-        //       decoration: const InputDecoration(
-        //         contentPadding: EdgeInsets.symmetric(horizontal: 10),
-        //         border: InputBorder.none,
-        //       ),
-        //     ),
-        //     Align(
-        //       alignment: Alignment.bottomRight,
-        //       child: TextButton(
-        //           child: Text(
-        //             textDelegate.done,
-        //             style: const TextStyle(
-        //               color: Colors.white,
-        //               fontWeight: FontWeight.bold,
-        //             ),
-        //           ),
-        //           onPressed: onFinished),
-        //     ),
-        //   ],
-        // ),
         );
   }
 
@@ -111,7 +70,7 @@ class TextDialog extends StatelessWidget {
                       cursorColor: Colors.black,
                       autofocus: true,
                       controller: controller,
-                      style: TextStyle(color: Colors.black, fontSize: 25),
+                      style: const TextStyle(color: Colors.black, fontSize: 25),
                       decoration: InputDecoration(border: InputBorder.none))),
             ),
             IconButton(

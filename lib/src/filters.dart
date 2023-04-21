@@ -1,12 +1,9 @@
 import 'dart:async';
 import 'dart:math' as math;
-
 import 'package:camera_filter/constant.dart';
-import 'package:clay_containers/clay_containers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:glass/glass.dart';
-
 import '../ripple_effect.dart';
 
 @immutable
@@ -54,17 +51,7 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
   late Animation<double> thirdRippleOpacityAnimation;
   late Animation<double> thirdRippleWidthAnimation;
   late Animation<double> centerCircleRadiusAnimation;
-  // late final AnimationController _controller = AnimationController(
-  //     duration: const Duration(seconds: 2),
-  //     vsync: this,
-  // )..repeat(reverse: true);
-  // late final Animation<Offset> _offsetAnimation = Tween<Offset>(
-  //   begin: Offset.zero,
-  //   end: const Offset(1.5, 0.0),
-  // ).animate(CurvedAnimation(
-  //   parent: _controller,
-  //   curve: Curves.elasticIn,
-  // ));
+
 
   /// filter per screen is by default five
   static const _filtersPerScreen = 5;
@@ -94,7 +81,7 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
     _controller.addListener(_onPageChanged);
     firstRippleController = AnimationController(
       vsync: this,
-      duration: Duration(
+      duration: const Duration(
         seconds: 2,
       ),
     );
@@ -142,7 +129,7 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
 
     secondRippleController = AnimationController(
       vsync: this,
-      duration: Duration(
+      duration: const Duration(
         seconds: 2,
       ),
     );
@@ -188,7 +175,7 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
 
     thirdRippleController = AnimationController(
       vsync: this,
-      duration: Duration(
+      duration: const Duration(
         seconds: 2,
       ),
     );
@@ -258,12 +245,12 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
 
     firstRippleController.forward();
     Timer(
-      Duration(milliseconds: 765),
+      const Duration(milliseconds: 765),
           () => secondRippleController.forward(),
     );
 
     Timer(
-      Duration(milliseconds: 1050),
+      const Duration(milliseconds: 1050),
           () => thirdRippleController.forward(),
     );
 
@@ -341,7 +328,6 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
 
   Widget _buildShadowGradient(double itemSize) {
     return SizedBox(
-      //width: itemSize * 1 + widget.padding.vertical,
       height: itemSize * 1 + widget.padding.vertical,
       child: const DecoratedBox(
         decoration: BoxDecoration(
@@ -395,17 +381,20 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
       onTap: widget.onTap,
       child: IgnorePointer(
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 25, right: 8,),
+          padding: const EdgeInsets.only(bottom: 23, right: 8,),
           child: Stack(
             children: [
               SizedBox(
                 width: itemSize,
                 height: itemSize,
-                // child:  GradientCircularProgressIndicator(
-                //   gradient: Gradients.rainbowBlue, radius:10,),
-                child:  CircularProgressIndicator(
-                  backgroundColor: Colors.lightGreen.shade300,
-                  color: Colors.lightGreen,),
+                child: const DecoratedBox(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.fromBorderSide(
+                      BorderSide(width: 3.0, color: Colors.white),
+                    ),
+                  ),
+                ),
               ),
 
           Padding(
@@ -425,16 +414,6 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
               ),
             ):SizedBox()
           ),
-
-            //   child:    DecoratedBox(
-            //     decoration: BoxDecoration(
-            //         shape: BoxShape.circle,
-            //      border: Border.fromBorderSide(
-            //         BorderSide(width:4,color: Colors.white),
-            //              ),
-            //   ),
-            //
-            // ),
         ]
           ),
       )),
@@ -459,23 +438,14 @@ class CarouselFlowDelegate extends FlowDelegate {
     /// All available painting width
     final size = context.size.width;
 
-    /// The distance that a single item "page" takes up from the perspective
-    /// of the scroll paging system. We also use this size for the width and
-    /// height of a single item.
     final itemExtent = size / filtersPerScreen;
 
-    /// The current scroll position expressed as an item fraction, e.g., 0.0,
-    /// or 1.0, or 1.3, or 2.9, etc. A value of 1.3 indicates that item at
-    /// index 1 is active, and the user has scrolled 30% towards the item at
-    /// index 2.
+
     final active = viewportOffset.pixels / itemExtent;
 
-    /// Index of the first item we need to paint at this moment.
-    /// At most, we paint 3 items to the left of the active item.
     final int min = math.max(0, active.floor() - 3);
 
-    /// Index of the last item we need to paint at this moment.
-    /// At most, we paint 3 items to the right of the active item.
+
     final int max = math.min(count - 1, active.ceil() + 3);
 
     /// Generate transforms for the visible items and sort by distance.

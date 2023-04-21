@@ -27,7 +27,7 @@ Color _backgroundColor = Colors.white;
 Curve _insetAnimCurve = Curves.easeInOut;
 EdgeInsets _dialogPadding = const EdgeInsets.all(8.0);
 
-Widget _progressWidget = CircularProgressIndicator(
+Widget _progressWidget = const CircularProgressIndicator(
   color: Colors.black,
 );
 
@@ -140,7 +140,7 @@ class ProgressDialog {
               child: Dialog(
                   backgroundColor: _backgroundColor,
                   insetAnimationCurve: _insetAnimCurve,
-                  insetAnimationDuration: Duration(milliseconds: 100),
+                  insetAnimationDuration: const Duration(milliseconds: 100),
                   elevation: _dialogElevation,
                   shape: RoundedRectangleBorder(
                       borderRadius:
@@ -149,9 +149,8 @@ class ProgressDialog {
             );
           },
         );
-        // Delaying the function for 200 milliseconds
-        // [Default transitionDuration of DialogRoute]
-        await Future.delayed(Duration(milliseconds: 200));
+
+        await Future.delayed(const Duration(milliseconds: 200));
         if (_showLogs) debugPrint('ProgressDialog shown');
         _isShowing = true;
         return true;
@@ -168,7 +167,6 @@ class ProgressDialog {
   }
 }
 
-// ignore: must_be_immutable
 class _Body extends StatefulWidget {
   final _BodyState _dialog = _BodyState();
 
@@ -218,7 +216,7 @@ class _BodyState extends State<_Body> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  SizedBox(height: 8.0),
+                  const SizedBox(height: 8.0),
                   Row(
                     children: <Widget>[
                       Expanded(
@@ -229,7 +227,7 @@ class _BodyState extends State<_Body> {
                       )),
                     ],
                   ),
-                  SizedBox(height: 4.0),
+                  const SizedBox(height: 4.0),
                   Align(
                     alignment: Alignment.bottomRight,
                     child: Text(

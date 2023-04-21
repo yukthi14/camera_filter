@@ -4,7 +4,6 @@ import 'package:camera_filter/src/draw_image.dart';
 import 'package:camera_filter/src/painter.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
 class EditImageScreen extends StatefulWidget {
   ///path of image
   String? path;

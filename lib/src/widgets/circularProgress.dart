@@ -18,7 +18,7 @@ class Blob extends StatelessWidget {
           width: 100,
           decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(150),
               topRight: Radius.circular(240),
               bottomLeft: Radius.circular(220),

@@ -4,10 +4,8 @@ import 'package:flutter/material.dart' hide Image;
 
 ///Handles all the painting ongoing on the canvas.
 class DrawImage extends CustomPainter {
-  ///Converted image from [ImagePainter] constructor.
   final Image? image;
 
-  ///Keeps track of all the units of [PaintHistory].
   final List<PaintInfo>? paintHistory;
 
   ///Keeps track of points on currently drawing state.
@@ -53,7 +51,6 @@ class DrawImage extends CustomPainter {
             ..style = PaintingStyle.fill
             ..color = backgroundColor!);
     } else {
-      ///paints [ui.Image] on the canvas for reference to draw over it.
       paintImage(
         canvas: canvas,
         image: image!,
@@ -65,7 +62,6 @@ class DrawImage extends CustomPainter {
       );
     }
 
-    ///paints all the previoud paintInfo history recorded on [PaintHistory]
     for (var item in paintHistory!) {
       final _offset = item.offset;
       final _painter = item.painter;
@@ -131,7 +127,6 @@ class DrawImage extends CustomPainter {
       }
     }
 
-    ///Draws ongoing action on the canvas while indrag.
     if (isDragging) {
       final _start = update!.start;
       final _end = update!.end;
@@ -175,11 +170,9 @@ class DrawImage extends CustomPainter {
       }
     }
 
-    ///Draws all the completed actions of painting on the canvas.
   }
 
-  ///Draws line as well as the arrowhead on top of it.
-  ///Uses [strokeWidth] of the painter for sizing.
+
   void drawArrow(Canvas canvas, Offset start, Offset end, Paint painter) {
     final arrowPainter = Paint()
       ..color = painter.color
@@ -198,8 +191,7 @@ class DrawImage extends CustomPainter {
     canvas.restore();
   }
 
-  ///Draws dashed path.
-  ///It depends on [strokeWidth] for space to line proportion.
+
   Path _dashPath(Path path, double width) {
     final dashPath = Path();
     final dashWidth = 10.0 * width / 5;
@@ -227,7 +219,6 @@ class DrawImage extends CustomPainter {
 
 ///All the paint method available for use.
 enum PaintMode {
-  ///Prefer using [None] while doing scaling operations.
   none,
 
   ///Allows for drawing freehand shapes or text.
@@ -252,7 +243,6 @@ enum PaintMode {
   dashLine
 }
 
-///[PaintInfo] keeps track of a single unit of shape, whichever selected.
 class PaintInfo {
   ///Mode of the paint method.
   PaintMode? mode;
@@ -263,7 +253,7 @@ class PaintInfo {
   double? fontSize;
 
   ///Used to save offsets.
-  ///Two point in case of other shapes and list of points for [FreeStyle].
+
   List<Offset?>? offset;
 
   ///Used to save text in case of text type.
@@ -275,7 +265,6 @@ class PaintInfo {
 
 @immutable
 
-///Records realtime updates of ongoing [PaintInfo] when inDrag.
 class UpdatePoints {
   ///Records the first tap offset,
   final Offset? start;
@@ -289,7 +278,6 @@ class UpdatePoints {
   ///Records [PaintMode] of the ongoing painting.
   final PaintMode? mode;
 
-  ///Constructor for ongoing painthistory.
   UpdatePoints({this.start, this.end, this.painter, this.mode});
 
   @override

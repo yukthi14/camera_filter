@@ -1,7 +1,4 @@
-// ignore_for_file: must_be_immutable
-
 import 'dart:io';
-
 import 'package:camera_filter/src/draw_image.dart';
 import 'package:camera_filter/src/painter.dart';
 import 'package:camera_filter/src/tapioca/content.dart';
@@ -95,7 +92,7 @@ class _VideoPlayersState extends State<VideoPlayer> {
                           Icons.arrow_back_ios,
                           color: Colors.white,
                         )),
-                    Spacer(),
+                    const Spacer(),
                     GestureDetector(
                         onTap: () {
                           if (index != _filters.length - 1) {
@@ -103,7 +100,7 @@ class _VideoPlayersState extends State<VideoPlayer> {
                             index = index + 1;
                           }
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_forward_ios,
                           color: Colors.white,
                         )),
@@ -126,38 +123,11 @@ class _VideoPlayersState extends State<VideoPlayer> {
     _videoPlayerController = VideoPlayerController.file(File(widget.video!));
 
     _videoPlayerController.addListener(() {
-      // setState(() {});
     });
     _videoPlayerController.setLooping(true);
     _videoPlayerController.initialize().then((_) => setState(() {}));
     _videoPlayerController.play();
-    // BetterPlayerConfiguration betterPlayerConfiguration =
-    //     BetterPlayerConfiguration(
-    //   aspectRatio: 0.5,
-    //   fit: BoxFit.fill,
-    //   autoPlay: true,
-    //   looping: true,
-    //   subtitlesConfiguration: //a == null?BetterPlayerSubtitlesConfiguration():
-    //       BetterPlayerSubtitlesConfiguration(fontColor: Colors.transparent),
-    //   controlsConfiguration: BetterPlayerControlsConfiguration(
-    //       iconsColor: Colors.transparent,
-    //       textColor: Colors.transparent,
-    //       progressBarPlayedColor: Colors.transparent,
-    //       progressBarBackgroundColor: Colors.transparent,
-    //       progressBarBufferedColor: Colors.transparent,
-    //       progressBarHandleColor: Colors.transparent),
-    //   expandToFill: true,
-    //   deviceOrientationsAfterFullScreen: [
-    //     DeviceOrientation.portraitDown,
-    //     DeviceOrientation.portraitUp
-    //   ],
-    // );
-    // _betterPlayerDataSource = BetterPlayerDataSource(
-    //   BetterPlayerDataSourceType.file,
-    //   widget.video!,
-    // );
-    // _betterPlayerController = BetterPlayerController(betterPlayerConfiguration);
-    // _betterPlayerController.setupDataSource(_betterPlayerDataSource);
+
     super.initState();
   }
 
@@ -211,14 +181,14 @@ class _VideoPlayersState extends State<VideoPlayer> {
                         shape: ContinuousRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        icon: Icon(Icons.format_size, color: Colors.white),
+                        icon: const Icon(Icons.format_size, color: Colors.white),
                         itemBuilder: (_) => [_showTextSlider()],
                       ),
                       ValueListenableBuilder<Controller>(
                           valueListenable: _controller,
                           builder: (_, controller, __) {
                             return IconButton(
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.color_lens_rounded,
                                 color: Colors.white,
                               ),
@@ -306,9 +276,9 @@ class _VideoPlayersState extends State<VideoPlayer> {
                           height: 60,
                           width: 60,
                           decoration: BoxDecoration(
-                              color: Color(0xffd51820),
+                              color: const Color(0xffd51820),
                               borderRadius: BorderRadius.circular(60)),
-                          child: Center(
+                          child: const Center(
                             child: Icon(Icons.send),
                           ),
                         ),
@@ -363,7 +333,6 @@ class _VideoPlayersState extends State<VideoPlayer> {
                 onColorChanged: (color) {
                   _controller.value = controller.copyWith(color: color);
                   colorValue.value = color.value;
-                  // Navigator.pop(context);
                 },
               ),
             ),
@@ -402,7 +371,7 @@ class _VideoPlayersState extends State<VideoPlayer> {
                       cursorColor: Colors.black,
                       autofocus: true,
                       controller: _textEditingController,
-                      style: TextStyle(color: Colors.black, fontSize: 25),
+                      style: const TextStyle(color: Colors.black, fontSize: 25),
                       decoration: InputDecoration(border: InputBorder.none))),
             ),
             IconButton(
@@ -428,11 +397,6 @@ class _VideoPlayersState extends State<VideoPlayer> {
   final width = 100.0;
   final height = 100.0;
 
-  // bool _dragging = false;
-  //
-  // /// Is the point (x, y) inside the rect?
-  // bool _insideRect(double x, double y) =>
-  //     x >= xPos && x <= xPos + width && y >= yPos && y <= yPos + height;
 
   Widget positionedText() {
     return GestureDetector(

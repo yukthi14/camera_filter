@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 
 class VideoEditor {
-  static const MethodChannel _channel = const MethodChannel('camera_filters');
+  static const MethodChannel _channel = MethodChannel('camera_filters');
 
   static Future<String> get platformVersion async {
     final String version = await _channel.invokeMethod('getPlatformVersion');

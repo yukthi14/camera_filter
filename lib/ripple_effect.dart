@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   void initState() {
     firstRippleController = AnimationController(
       vsync: this,
-      duration: Duration(
+      duration: const Duration(
         seconds: 2,
       ),
     );
@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     secondRippleController = AnimationController(
       vsync: this,
-      duration: Duration(
+      duration: const Duration(
         seconds: 2,
       ),
     );
@@ -136,7 +136,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     thirdRippleController = AnimationController(
       vsync: this,
-      duration: Duration(
+      duration: const Duration(
         seconds: 2,
       ),
     );
@@ -206,12 +206,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
     firstRippleController.forward();
     Timer(
-      Duration(milliseconds: 765),
+      const Duration(milliseconds: 765),
           () => secondRippleController.forward(),
     );
 
     Timer(
-      Duration(milliseconds: 1050),
+      const Duration(milliseconds: 1050),
           () => thirdRippleController.forward(),
     );
 

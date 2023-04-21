@@ -46,12 +46,10 @@ dependencies:
   vector_math: ^2.1.4
   video_player: ^2.5.1
   gradient_widgets: ^0.6.0
-  blur: ^3.1.0
-  clay_containers: ^0.3.2
   glass: ^1.0.1+1
   image_picker: ^0.8.7+3
   curved_navigation_bar: ^1.0.3
-  circular_menu: ^2.0.1
+  sizer: ^2.0.15
 
 
 dev_dependencies:

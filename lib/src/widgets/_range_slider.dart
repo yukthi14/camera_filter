@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 
-///
+
 class RangedSlider extends StatelessWidget {
-  ///Range Slider widget for stroke Width
   const RangedSlider({Key? key, this.value, this.onChanged}) : super(key: key);
 
-  ///Default value of stroke width.
   final double? value;
 
-  /// Callback for value change.
   final ValueChanged<double>? onChanged;
 
   @override
