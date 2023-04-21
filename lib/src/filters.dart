@@ -367,7 +367,7 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
             FilterItem(
               onVideoFilter: onVideoFilter,
               onFilterSelected: () => _onFilterTapped(i),
-              color: itemColor(i),
+              color: itemColor(i), index: i,
             ),
         ],
       ),
@@ -381,7 +381,7 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
       onTap: widget.onTap,
       child: IgnorePointer(
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 23, right: 8,),
+          padding: const EdgeInsets.only(bottom: 24, right: 8,),
           child: Stack(
             children: [
               SizedBox(
@@ -391,7 +391,7 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.fromBorderSide(
-                      BorderSide(width: 3.0, color: Colors.white),
+                      BorderSide(width: 4.0, color: Colors.white),
                     ),
                   ),
                 ),
@@ -481,11 +481,13 @@ class FilterItem extends StatelessWidget {
     Key? key,
     required this.color,
     required this.onVideoFilter,
+    required this.index,
     this.onFilterSelected,
   }) : super(key: key);
 
   final Color color;
   final bool onVideoFilter;
+  final int index;
   final VoidCallback? onFilterSelected;
 
   @override
@@ -497,8 +499,8 @@ class FilterItem extends StatelessWidget {
           : AspectRatio(
         aspectRatio: 1.0,
         child: ClipOval(
-          child: Image.asset(
-            'assets/icon.png',
+          child: Image.network(
+            "https://i.pinimg.com/236x/13/bb/91/13bb91788a2d8359846e806f27e18552.jpg",
             color: color.withOpacity(0.9),
             fit: BoxFit.fill,
             colorBlendMode: BlendMode.hardLight,

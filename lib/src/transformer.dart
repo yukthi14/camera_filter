@@ -550,7 +550,7 @@ class _ImagePainterTransformerState extends State<ImagePainterTransformer>
       end: Offset(frictionSimulationX.finalX, frictionSimulationY.finalX),
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: Curves.decelerate,
+      curve: Curves.easeInOutBack,
     ));
     _controller.duration = Duration(milliseconds: (tFinal * 1000).round());
     _animation!.addListener(_onAnimate);

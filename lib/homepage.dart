@@ -3,6 +3,7 @@ import 'package:camera_filter/constant.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({Key? key}) : super(key: key);
@@ -18,35 +19,35 @@ class _FirstPageState extends State<FirstPage> {
       body: pageView(),
       backgroundColor: Colors.white,
       bottomNavigationBar: CurvedNavigationBar(
-        height: 60,
+        height:7.h,
         color: Colors.black,
         index: currentIndex,
         backgroundColor: Colors.white,
-        items: const [
+        items:  [
           Icon(
             Icons.home_rounded,
-            size: 18,
+            size: 13.sp,
             color: Colors.white,
           ),
           Icon(
             Icons.person,
             color: Colors.white,
-            size: 18,
+            size: 13.sp,
           ),
           Icon(
             Icons.add_circle_rounded,
             color: Colors.white,
-            size: 18,
+            size: 13.sp,
           ),
           Icon(
             Icons.assistant,
             color: Colors.white,
-            size: 18,
+            size: 13.sp,
           ),
           Icon(
             Icons.settings_suggest_rounded,
             color: Colors.white,
-            size: 18,
+            size: 13.sp,
           ),
         ],
         onTap: (index) {
@@ -79,6 +80,7 @@ class _FirstPageState extends State<FirstPage> {
         },
       ),
     );
+
   }
 
   Widget pageView() {
