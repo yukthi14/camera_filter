@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:blur/blur.dart';
 import 'package:camera/camera.dart';
 import 'package:camera_filter/constant.dart';
 import 'package:camera_filter/src/edit_image_screen.dart';
@@ -13,7 +14,6 @@ import 'package:glass/glass.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:touch_ripple_effect/touch_ripple_effect.dart';
 
 class CameraScreenPlugin extends StatefulWidget {
   Function(dynamic)? onDone;
@@ -212,12 +212,12 @@ class _CameraScreenState extends State<CameraScreenPlugin>
     return Material(
       color: Colors.black,
       child: _initializeControllerFuture == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(child: Center(child: CircularProgressIndicator()))
           : Stack(
               children: [
                 Positioned(
                   bottom: MediaQuery.of(context).size.height * 0.0001,
-                  top: MediaQuery.of(context).size.height * 0.045,
+                  top: MediaQuery.of(context).size.height * 0.042,
                   child: GestureDetector(
                     onTap: () {
                       if (zoomLevel == 8.0) {
@@ -359,10 +359,12 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                           onPressed: () {
                             if (_controller!.description.lensDirection ==
                                 CameraLensDirection.front) {
-                              final CameraDescription selectedCamera = cameras[0];
+                              final CameraDescription selectedCamera =
+                                  cameras[0];
                               _initCameraController(selectedCamera);
                             } else {
-                              final CameraDescription selectedCamera = cameras[1];
+                              final CameraDescription selectedCamera =
+                                  cameras[1];
                               _initCameraController(selectedCamera);
                             }
                           },
@@ -394,7 +396,8 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                                             slide = false;
                                           });
                                           cameraChange.value = true;
-                                          _controller!.prepareForVideoRecording();
+                                          _controller!
+                                              .prepareForVideoRecording();
                                         } else {
                                           setState(() {
                                             slowMotion = false;
@@ -409,33 +412,28 @@ class _CameraScreenState extends State<CameraScreenPlugin>
 
                       slide
                           ? SizedBox(
-                        width: 13.w,
-                        height: 5.h,
-                            child: MaterialButton(
-                              shape: const CircleBorder(),
+                              width: 13.w,
+                              height: 5.h,
+                              child: MaterialButton(
+                                shape: const CircleBorder(),
                                 onPressed: () {
+                                 setState(() {
+                                   slide=false;
+                                 });
                                   showCupertinoModalPopup(
                                       context: context,
                                       builder: (BuildContext builder) {
-                                        return Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              0.7,
-                                          //child: Icon(Icons.search,color: Colors.white,),
-                                          decoration: const BoxDecoration(
-                                              color: Colors.black12,
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(50),
-                                                  topRight:
-                                                      Radius.circular(50))),
-                                        );
+
+                                        return musicPage();
                                       });
                                 },
-                              padding: EdgeInsets.all(5),
-                                child: const Icon(Icons.music_note_rounded,color: Colors.white,),
+                                padding: EdgeInsets.all(5),
+                                child: const Icon(
+                                  Icons.music_note_rounded,
+                                  color: Colors.white,
+                                ),
                               ),
-                          )
+                            )
                           : const SizedBox(),
 
                       slide
@@ -460,47 +458,54 @@ class _CameraScreenState extends State<CameraScreenPlugin>
 
                       slide
                           ? SizedBox(
-                        width: 13.w,
-                        height: 5.h,
-                            child: MaterialButton(
-                        shape: const CircleBorder(),
-                                onPressed: () {
-                                },
-                              padding: const EdgeInsets.all(5),
-                                child: const Icon(Icons.brightness_6_rounded,color: Colors.white,
+                              width: 13.w,
+                              height: 5.h,
+                              child: MaterialButton(
+                                shape: const CircleBorder(),
+                                onPressed: () {},
+                                padding: const EdgeInsets.all(5),
+                                child: const Icon(
+                                  Icons.brightness_6_rounded,
+                                  color: Colors.white,
                                 ),
                               ),
-                          )
+                            )
                           : const SizedBox(),
 
                       slide
                           ? SizedBox(
-                        width: 13.w,
-                        height: 5.h,
-                            child: MaterialButton(
-                        shape: const CircleBorder(),
+                              width: 13.w,
+                              height: 5.h,
+                              child: MaterialButton(
+                                shape: const CircleBorder(),
                                 onPressed: () {},
-                               padding: const EdgeInsets.all(5),
-                                child: const Icon(Icons.animation_rounded, color: Colors.white,),
+                                padding: const EdgeInsets.all(5),
+                                child: const Icon(
+                                  Icons.animation_rounded,
+                                  color: Colors.white,
+                                ),
                               ),
-                          )
+                            )
                           : const SizedBox(),
-                      
+
                       (slide && cameraChange.value)
                           ? SizedBox(
-                        width: 13.w,
-                        height: 5.h,
-                            child: MaterialButton(
-                        shape: const CircleBorder(),
+                              width: 13.w,
+                              height: 5.h,
+                              child: MaterialButton(
+                                shape: const CircleBorder(),
                                 onPressed: () {
                                   setState(() {
                                     fps = !fps;
                                   });
                                 },
                                 padding: const EdgeInsets.all(5),
-                                child: const Icon(Icons.slow_motion_video_rounded,color: Colors.white,),
+                                child: const Icon(
+                                  Icons.slow_motion_video_rounded,
+                                  color: Colors.white,
+                                ),
                               ),
-                          )
+                            )
                           : const SizedBox(),
 
                       AnimatedContainer(
@@ -540,8 +545,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                         width: 12.w,
                         height: 5.5.h,
                         child: MaterialButton(
-                          shape: const CircleBorder(
-                          ),
+                          shape: const CircleBorder(),
                           child: const Icon(
                             Icons.close_rounded,
                             color: Colors.white,
@@ -686,7 +690,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                       ],
                     )),
                 Positioned(
-                    bottom: 120.0,
+                    bottom: 15.h,
                     child: Row(
                       children: [
                         ValueListenableBuilder(
@@ -697,7 +701,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                               width: 13.w,
                               height: 5.h,
                               child: MaterialButton(
-                                  shape: const CircleBorder(),
+                                      shape: const CircleBorder(),
                                       child: Icon(
                                         cameraChange.value == false
                                             ? Icons.photo_album_outlined
@@ -711,7 +715,8 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                                           try {
                                             XFile? filePath =
                                                 await image.pickImage(
-                                                    source: ImageSource.gallery);
+                                                    source:
+                                                        ImageSource.gallery);
                                             print(filePath);
                                           } catch (e) {
                                             print(e);
@@ -721,14 +726,14 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                                           try {
                                             XFile? filePath =
                                                 await image.pickVideo(
-                                                    source: ImageSource.gallery);
+                                                    source:
+                                                        ImageSource.gallery);
                                             print(filePath);
                                           } catch (e) {
                                             print(e);
                                           }
                                         }
-                                      }
-                                      )
+                                      })
                                   .asGlass(
                                       tintColor: Colors.black,
                                       clipBorderRadius: const BorderRadius.only(
@@ -739,6 +744,41 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                         )
                       ],
                     )),
+                (selectedSong!="")?Positioned(
+                    left: 30.w,
+                    top: 5.h,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+
+                        color: Colors.black38,
+                      ),
+                      width: 40.w,
+                      height: 6.h,
+                      child:Stack(
+                        children: [
+                          Center(
+                            child: Text(
+                              musicName[int.parse(selectedSong)],style:  TextStyle(color: Colors.white,fontSize: 15.sp),
+                            ),
+                          ),
+                          Padding(
+                            padding:  EdgeInsets.only(left: 28.0.w,bottom: 3.h),
+                            child: MaterialButton(
+                              shape: const CircleBorder(),
+                              onPressed: () {
+                                setState(() =>selectedSong="");
+                              },
+                              child:  Icon(
+                                Icons.close_rounded,
+                                color: Colors.white,
+                                size: 15.sp,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    )):const SizedBox()
               ],
             ),
     );
@@ -915,6 +955,73 @@ class _CameraScreenState extends State<CameraScreenPlugin>
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget musicPage() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.7,
+      decoration: const BoxDecoration(
+          color: Colors.black54,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(50), topRight: Radius.circular(50))),
+
+      child: ListView.builder(
+        itemCount: musicName.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: (){
+              setState(() {
+                selectedSong=index.toString();
+              });
+            },
+            child: Container(
+              width: 10.w,
+              height: 10.h,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: MediaQuery.of(context).size.width * 0.09),
+                    width: 13.w,
+                    height: 13.h,
+                    child: Image.network(posterImage[index]),
+                  ),
+
+                  Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                            right: MediaQuery.of(context).size.width * 0.05,
+                            top: MediaQuery.of(context).size.height * 0.02),
+                        width: MediaQuery.of(context).size.width * 0.65,
+                        height: MediaQuery.of(context).size.height * 0.03,
+                        child: DefaultTextStyle(
+                          style: TextStyle(fontSize: 13.sp, color: Colors.white60),
+                          child: Text(musicName[index]),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(
+                            right: MediaQuery.of(context).size.width * 0.05,
+                            bottom: MediaQuery.of(context).size.height * 0.01),
+                        width: MediaQuery.of(context).size.width * 0.65,
+                        height: MediaQuery.of(context).size.height * 0.03,
+                        child: DefaultTextStyle(
+                          style: TextStyle(fontSize: 10.sp, color: Colors.white38),
+                          child: Text(musicArtists[index]),
+                        ),
+                      ),
+
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:camera_filter/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:glass/glass.dart';
+import 'package:sizer/sizer.dart';
 import '../ripple_effect.dart';
 
 @immutable
@@ -381,7 +382,7 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
       onTap: widget.onTap,
       child: IgnorePointer(
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 24, right: 8,),
+          padding:  EdgeInsets.only(bottom: 2.5.h, right: 2.w,),
           child: Stack(
             children: [
               SizedBox(
@@ -500,7 +501,7 @@ class FilterItem extends StatelessWidget {
         aspectRatio: 1.0,
         child: ClipOval(
           child: Image.network(
-            "https://i.pinimg.com/236x/13/bb/91/13bb91788a2d8359846e806f27e18552.jpg",
+            "https://i.pinimg.com/236x/7d/41/74/7d4174a43fc88e7f2dc4a70fc4200f58.jpg",
             color: color.withOpacity(0.9),
             fit: BoxFit.fill,
             colorBlendMode: BlendMode.hardLight,

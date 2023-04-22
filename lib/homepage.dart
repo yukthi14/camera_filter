@@ -1,3 +1,4 @@
+import 'package:blur/blur.dart';
 import 'package:camera_filter/camera_filters.dart';
 import 'package:camera_filter/constant.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -12,8 +13,15 @@ class FirstPage extends StatefulWidget {
   State<FirstPage> createState() => _FirstPageState();
 }
 
-class _FirstPageState extends State<FirstPage> {
+class _FirstPageState extends State<FirstPage> with SingleTickerProviderStateMixin {
+
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: pageView(),
