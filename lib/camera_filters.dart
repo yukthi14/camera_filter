@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:blur/blur.dart';
 import 'package:camera/camera.dart';
 import 'package:camera_filter/constant.dart';
+import 'package:camera_filter/song_cutter.dart';
 import 'package:camera_filter/src/edit_image_screen.dart';
 import 'package:camera_filter/src/filters.dart';
 import 'package:camera_filter/src/widgets/circularProgress.dart';
@@ -256,10 +257,12 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                                         })
                                     : CameraPreview(_controller!);
                               });
-                        } else {
+                        }
+                        else {
                           /// Otherwise, display a loading indicator.
                           return const Center(
-                              child: CircularProgressIndicator());
+                            //  child: CircularProgressIndicator()
+                          );
                         }
                       },
                     ),
@@ -284,7 +287,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                               );
                       }),
                 ),
-                Positioned(
+                containerOpened?Positioned(
                   left: 0.0,
                   right: 0.0,
                   bottom: 0.0,
@@ -295,7 +298,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                             ? _buildFilterSelector()
                             : videoRecordingWidget();
                       }),
-                ),
+                ):const SizedBox(),
                 Positioned(
                   right: 10.0,
                   top: 30.0,
@@ -419,15 +422,19 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                                 onPressed: () {
                                  setState(() {
                                    slide=false;
+                                   containerOpened=false;
                                  });
                                   showCupertinoModalPopup(
                                       context: context,
                                       builder: (BuildContext builder) {
-
                                         return musicPage();
-                                      });
+                                      }).then((value) {
+                                        setState(() {
+                                          containerOpened=true;
+                                        });
+                                  });
                                 },
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                                 child: const Icon(
                                   Icons.music_note_rounded,
                                   color: Colors.white,
@@ -447,7 +454,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                                     selectTimer = !selectTimer;
                                   });
                                 },
-                                padding: EdgeInsets.all(5),
+                                padding: const EdgeInsets.all(5),
                                 child: const Icon(
                                   Icons.timer_rounded,
                                   color: Colors.white,
@@ -637,7 +644,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                           clipBorderRadius: BorderRadius.circular(100.0))
                       : SizedBox(),
                 ),
-                Positioned(
+                containerOpened?Positioned(
                     left: MediaQuery.of(context).size.width * 0.35,
                     bottom: MediaQuery.of(context).size.height * 0.16,
                     child: Row(
@@ -688,7 +695,8 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                             tintColor: Colors.transparent,
                             clipBorderRadius: BorderRadius.circular(100.0)),
                       ],
-                    )),
+                    )):const SizedBox(),
+                containerOpened?
                 Positioned(
                     bottom: 15.h,
                     child: Row(
@@ -743,14 +751,14 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                           },
                         )
                       ],
-                    )),
+                    )):const SizedBox(),
+
                 (selectedSong!="")?Positioned(
                     left: 30.w,
                     top: 5.h,
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-
                         color: Colors.black38,
                       ),
                       width: 40.w,
@@ -974,9 +982,17 @@ class _CameraScreenState extends State<CameraScreenPlugin>
             onTap: (){
               setState(() {
                 selectedSong=index.toString();
+
+                showCupertinoModalPopup(
+                    context: context,
+                    builder: (BuildContext builder) {
+                      return  SongCutter(value: index,);
+                    });
               });
             },
-            child: Container(
+
+
+            child: SizedBox(
               width: 10.w,
               height: 10.h,
               child: Row(
@@ -1001,7 +1017,9 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                         child: DefaultTextStyle(
                           style: TextStyle(fontSize: 13.sp, color: Colors.white60),
                           child: Text(musicName[index]),
+
                         ),
+
                       ),
                       Container(
                         margin: EdgeInsets.only(
@@ -1019,7 +1037,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                   )
                 ],
               ),
-            ),
+            )
           );
         },
       ),

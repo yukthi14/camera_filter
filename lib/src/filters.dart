@@ -382,7 +382,7 @@ class _FilterSelectorState extends State<FilterSelector> with TickerProviderStat
       onTap: widget.onTap,
       child: IgnorePointer(
         child: Padding(
-          padding:  EdgeInsets.only(bottom: 2.5.h, right: 2.w,),
+          padding:  EdgeInsets.only(bottom: 2.8.h, right: 2.w,),
           child: Stack(
             children: [
               SizedBox(
