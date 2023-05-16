@@ -53,6 +53,7 @@ dependencies:
   touch_ripple_effect: ^2.2.4
   blur: ^3.1.0
   audioplayers: ^4.0.1
+  animated_text_kit: ^4.2.2
 
 
 dev_dependencies:
