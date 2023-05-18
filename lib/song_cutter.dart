@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:camera_filter/audio_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -38,15 +37,15 @@ class _SongCutterState extends State<SongCutter> {
         child: Stack(
           children: [
             Padding(
-              padding:  EdgeInsets.only(top: 20.h),
+              padding: EdgeInsets.only(top: 20.h),
               child: Center(
-                child: WaveSlider(backgroundColor: Colors.black87,
+                child: WaveSlider(
+                  backgroundColor: Colors.black87,
                   heightWaveSlider: 80,
                   widthWaveSlider: 300,
                   duration: 12.0,
                   callbackStart: (duration) {
                     print("Start $duration");
-
                   },
                   callbackEnd: (duration) {
                     print("End $duration");
@@ -59,7 +58,7 @@ class _SongCutterState extends State<SongCutter> {
                 top: 0.1.h,
               ),
               width: MediaQuery.of(context).size.width,
-              child: Image.network(posterImage[widget.value]),
+              child: Image.asset(posterImage[widget.value]),
             ),
             Padding(
               padding: EdgeInsets.only(top: 45.h),
@@ -79,16 +78,15 @@ class _SongCutterState extends State<SongCutter> {
                     }
                   },
                   child: Icon(
-                    playing ? Icons.pause : Icons.play_arrow,color: Colors.white,
+                    playing ? Icons.pause : Icons.play_arrow,
+                    color: Colors.white,
                   ),
                 ),
               ),
             ),
-
           ],
         ),
       ),
     );
   }
- 
 }

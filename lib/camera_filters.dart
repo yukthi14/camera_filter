@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:blur/blur.dart';
+
 import 'package:camera/camera.dart';
 import 'package:camera_filter/constant.dart';
 import 'package:camera_filter/song_cutter.dart';
@@ -257,12 +257,11 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                                         })
                                     : CameraPreview(_controller!);
                               });
-                        }
-                        else {
+                        } else {
                           /// Otherwise, display a loading indicator.
                           return const Center(
-                            //  child: CircularProgressIndicator()
-                          );
+                              //  child: CircularProgressIndicator()
+                              );
                         }
                       },
                     ),
@@ -287,18 +286,20 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                               );
                       }),
                 ),
-                containerOpened?Positioned(
-                  left: 0.0,
-                  right: 0.0,
-                  bottom: 0.0,
-                  child: ValueListenableBuilder(
-                      valueListenable: cameraChange,
-                      builder: (context, value, Widget? c) {
-                        return cameraChange.value == false
-                            ? _buildFilterSelector()
-                            : videoRecordingWidget();
-                      }),
-                ):const SizedBox(),
+                containerOpened
+                    ? Positioned(
+                        left: 0.0,
+                        right: 0.0,
+                        bottom: 0.0,
+                        child: ValueListenableBuilder(
+                            valueListenable: cameraChange,
+                            builder: (context, value, Widget? c) {
+                              return cameraChange.value == false
+                                  ? _buildFilterSelector()
+                                  : videoRecordingWidget();
+                            }),
+                      )
+                    : const SizedBox(),
                 Positioned(
                   right: 10.0,
                   top: 30.0,
@@ -420,18 +421,18 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                               child: MaterialButton(
                                 shape: const CircleBorder(),
                                 onPressed: () {
-                                 setState(() {
-                                   slide=false;
-                                   containerOpened=false;
-                                 });
+                                  setState(() {
+                                    slide = false;
+                                    containerOpened = false;
+                                  });
                                   showCupertinoModalPopup(
                                       context: context,
                                       builder: (BuildContext builder) {
                                         return musicPage();
                                       }).then((value) {
-                                        setState(() {
-                                          containerOpened=true;
-                                        });
+                                    setState(() {
+                                      containerOpened = true;
+                                    });
                                   });
                                 },
                                 padding: const EdgeInsets.all(5),
@@ -644,149 +645,163 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                           clipBorderRadius: BorderRadius.circular(100.0))
                       : SizedBox(),
                 ),
-                containerOpened?Positioned(
-                    left: MediaQuery.of(context).size.width * 0.35,
-                    bottom: MediaQuery.of(context).size.height * 0.16,
-                    child: Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            if (zoomLevel == 8.0) {
-                            } else {
-                              zoomLevel += 0.2;
-                              _controller?.setZoomLevel(zoomLevel);
-                            }
-                          },
-                          child: SizedBox(
-                            child: Center(
-                                child: Text(
-                              "0.6x",
-                              style: TextStyle(color: Colors.white),
-                            )),
-                            width: MediaQuery.of(context).size.width * 0.09,
-                            height: MediaQuery.of(context).size.height * 0.04,
-                          ).asGlass(
-                              tintColor: Colors.transparent,
-                              clipBorderRadius: BorderRadius.circular(100.0)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 6, right: 6),
-                          child: SizedBox(
-                            child: Center(
-                                child: Text(
-                              "1x",
-                              style: TextStyle(color: Colors.white),
-                            )),
-                            width: MediaQuery.of(context).size.width * 0.09,
-                            height: MediaQuery.of(context).size.height * 0.04,
-                          ).asGlass(
-                              tintColor: Colors.transparent,
-                              clipBorderRadius: BorderRadius.circular(50.0)),
-                        ),
-                        SizedBox(
-                          child: Center(
-                              child: Text(
-                            "2x",
-                            style: TextStyle(color: Colors.white),
-                          )),
-                          width: MediaQuery.of(context).size.width * 0.09,
-                          height: MediaQuery.of(context).size.height * 0.04,
-                        ).asGlass(
-                            tintColor: Colors.transparent,
-                            clipBorderRadius: BorderRadius.circular(100.0)),
-                      ],
-                    )):const SizedBox(),
-                containerOpened?
-                Positioned(
-                    bottom: 15.h,
-                    child: Row(
-                      children: [
-                        ValueListenableBuilder(
-                          valueListenable: cameraChange,
-                          builder: (BuildContext context, bool value,
-                              Widget? child) {
-                            return SizedBox(
-                              width: 13.w,
-                              height: 5.h,
-                              child: MaterialButton(
-                                      shape: const CircleBorder(),
-                                      child: Icon(
-                                        cameraChange.value == false
-                                            ? Icons.photo_album_outlined
-                                            : Icons.video_camera_front,
-                                        color: Colors.white,
-                                        size: 25,
-                                      ),
-                                      onPressed: () async {
-                                        if (cameraChange.value == false) {
-                                          ImagePicker image = ImagePicker();
-                                          try {
-                                            XFile? filePath =
-                                                await image.pickImage(
-                                                    source:
-                                                        ImageSource.gallery);
-                                            print(filePath);
-                                          } catch (e) {
-                                            print(e);
-                                          }
-                                        } else {
-                                          ImagePicker image = ImagePicker();
-                                          try {
-                                            XFile? filePath =
-                                                await image.pickVideo(
-                                                    source:
-                                                        ImageSource.gallery);
-                                            print(filePath);
-                                          } catch (e) {
-                                            print(e);
-                                          }
-                                        }
-                                      })
-                                  .asGlass(
-                                      tintColor: Colors.black,
-                                      clipBorderRadius: const BorderRadius.only(
-                                          topRight: Radius.circular(100),
-                                          bottomRight: Radius.circular(100))),
-                            );
-                          },
-                        )
-                      ],
-                    )):const SizedBox(),
-
-                (selectedSong!="")?Positioned(
-                    left: 30.w,
-                    top: 5.h,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: Colors.black38,
-                      ),
-                      width: 40.w,
-                      height: 6.h,
-                      child:Stack(
-                        children: [
-                          Center(
-                            child: Text(
-                              musicName[int.parse(selectedSong)],style:  TextStyle(color: Colors.white,fontSize: 15.sp),
-                            ),
-                          ),
-                          Padding(
-                            padding:  EdgeInsets.only(left: 28.0.w,bottom: 3.h),
-                            child: MaterialButton(
-                              shape: const CircleBorder(),
-                              onPressed: () {
-                                setState(() =>selectedSong="");
+                containerOpened
+                    ? Positioned(
+                        left: MediaQuery.of(context).size.width * 0.35,
+                        bottom: MediaQuery.of(context).size.height * 0.16,
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                if (zoomLevel == 8.0) {
+                                } else {
+                                  zoomLevel += 0.2;
+                                  _controller?.setZoomLevel(zoomLevel);
+                                }
                               },
-                              child:  Icon(
-                                Icons.close_rounded,
-                                color: Colors.white,
-                                size: 15.sp,
-                              ),
+                              child: SizedBox(
+                                child: Center(
+                                    child: Text(
+                                  "0.6x",
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                                width: MediaQuery.of(context).size.width * 0.09,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
+                              ).asGlass(
+                                  tintColor: Colors.transparent,
+                                  clipBorderRadius:
+                                      BorderRadius.circular(100.0)),
                             ),
-                          )
-                        ],
-                      ),
-                    )):const SizedBox()
+                            Padding(
+                              padding: const EdgeInsets.only(left: 6, right: 6),
+                              child: SizedBox(
+                                child: Center(
+                                    child: Text(
+                                  "1x",
+                                  style: TextStyle(color: Colors.white),
+                                )),
+                                width: MediaQuery.of(context).size.width * 0.09,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
+                              ).asGlass(
+                                  tintColor: Colors.transparent,
+                                  clipBorderRadius:
+                                      BorderRadius.circular(50.0)),
+                            ),
+                            SizedBox(
+                              child: Center(
+                                  child: Text(
+                                "2x",
+                                style: TextStyle(color: Colors.white),
+                              )),
+                              width: MediaQuery.of(context).size.width * 0.09,
+                              height: MediaQuery.of(context).size.height * 0.04,
+                            ).asGlass(
+                                tintColor: Colors.transparent,
+                                clipBorderRadius: BorderRadius.circular(100.0)),
+                          ],
+                        ))
+                    : const SizedBox(),
+                containerOpened
+                    ? Positioned(
+                        bottom: 15.h,
+                        child: Row(
+                          children: [
+                            ValueListenableBuilder(
+                              valueListenable: cameraChange,
+                              builder: (BuildContext context, bool value,
+                                  Widget? child) {
+                                return SizedBox(
+                                  width: 13.w,
+                                  height: 5.h,
+                                  child: MaterialButton(
+                                          shape: const CircleBorder(),
+                                          child: Icon(
+                                            cameraChange.value == false
+                                                ? Icons.photo_album_outlined
+                                                : Icons.video_camera_front,
+                                            color: Colors.white,
+                                            size: 25,
+                                          ),
+                                          onPressed: () async {
+                                            if (cameraChange.value == false) {
+                                              ImagePicker image = ImagePicker();
+                                              try {
+                                                XFile? filePath =
+                                                    await image.pickImage(
+                                                        source: ImageSource
+                                                            .gallery);
+                                                print(filePath);
+                                              } catch (e) {
+                                                print(e);
+                                              }
+                                            } else {
+                                              ImagePicker image = ImagePicker();
+                                              try {
+                                                XFile? filePath =
+                                                    await image.pickVideo(
+                                                        source: ImageSource
+                                                            .gallery);
+                                                print(filePath);
+                                              } catch (e) {
+                                                print(e);
+                                              }
+                                            }
+                                          })
+                                      .asGlass(
+                                          tintColor: Colors.black,
+                                          clipBorderRadius:
+                                              const BorderRadius.only(
+                                                  topRight:
+                                                      Radius.circular(100),
+                                                  bottomRight:
+                                                      Radius.circular(100))),
+                                );
+                              },
+                            )
+                          ],
+                        ))
+                    : const SizedBox(),
+                (selectedSong != "")
+                    ? Positioned(
+                        left: 30.w,
+                        top: 5.h,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50),
+                            color: Colors.black38,
+                          ),
+                          width: 40.w,
+                          height: 6.h,
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: Text(
+                                  musicName[int.parse(selectedSong)],
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15.sp),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(left: 28.0.w, bottom: 3.h),
+                                child: MaterialButton(
+                                  shape: const CircleBorder(),
+                                  onPressed: () {
+                                    setState(() => selectedSong = "");
+                                  },
+                                  child: Icon(
+                                    Icons.close_rounded,
+                                    color: Colors.white,
+                                    size: 15.sp,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ))
+                    : const SizedBox()
               ],
             ),
     );
@@ -974,71 +989,68 @@ class _CameraScreenState extends State<CameraScreenPlugin>
           color: Colors.black54,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(50), topRight: Radius.circular(50))),
-
       child: ListView.builder(
         itemCount: musicName.length,
         itemBuilder: (context, index) {
           return GestureDetector(
-            onTap: (){
-              setState(() {
-                selectedSong=index.toString();
+              onTap: () {
+                setState(() {
+                  selectedSong = index.toString();
 
-                showCupertinoModalPopup(
-                    context: context,
-                    builder: (BuildContext builder) {
-                      return  SongCutter(value: index,);
-                    });
-              });
-            },
-
-
-            child: SizedBox(
-              width: 10.w,
-              height: 10.h,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width * 0.09),
-                    width: 13.w,
-                    height: 13.h,
-                    child: Image.network(posterImage[index]),
-                  ),
-
-                  Column(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                            right: MediaQuery.of(context).size.width * 0.05,
-                            top: MediaQuery.of(context).size.height * 0.02),
-                        width: MediaQuery.of(context).size.width * 0.65,
-                        height: MediaQuery.of(context).size.height * 0.03,
-                        child: DefaultTextStyle(
-                          style: TextStyle(fontSize: 13.sp, color: Colors.white60),
-                          child: Text(musicName[index]),
-
+                  showCupertinoModalPopup(
+                      context: context,
+                      builder: (BuildContext builder) {
+                        return SongCutter(
+                          value: index,
+                        );
+                      });
+                });
+              },
+              child: SizedBox(
+                width: 10.w,
+                height: 10.h,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.09),
+                      width: 13.w,
+                      height: 13.h,
+                      child: Image.asset(posterImage[index]),
+                    ),
+                    Column(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(
+                              right: MediaQuery.of(context).size.width * 0.05,
+                              top: MediaQuery.of(context).size.height * 0.02),
+                          width: MediaQuery.of(context).size.width * 0.65,
+                          height: MediaQuery.of(context).size.height * 0.03,
+                          child: DefaultTextStyle(
+                            style: TextStyle(
+                                fontSize: 13.sp, color: Colors.white60),
+                            child: Text(musicName[index]),
+                          ),
                         ),
-
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(
-                            right: MediaQuery.of(context).size.width * 0.05,
-                            bottom: MediaQuery.of(context).size.height * 0.01),
-                        width: MediaQuery.of(context).size.width * 0.65,
-                        height: MediaQuery.of(context).size.height * 0.03,
-                        child: DefaultTextStyle(
-                          style: TextStyle(fontSize: 10.sp, color: Colors.white38),
-                          child: Text(musicArtists[index]),
+                        Container(
+                          margin: EdgeInsets.only(
+                              right: MediaQuery.of(context).size.width * 0.05,
+                              bottom:
+                                  MediaQuery.of(context).size.height * 0.01),
+                          width: MediaQuery.of(context).size.width * 0.65,
+                          height: MediaQuery.of(context).size.height * 0.03,
+                          child: DefaultTextStyle(
+                            style: TextStyle(
+                                fontSize: 10.sp, color: Colors.white38),
+                            child: Text(musicArtists[index]),
+                          ),
                         ),
-                      ),
-
-                    ],
-                  )
-                ],
-              ),
-            )
-          );
+                      ],
+                    )
+                  ],
+                ),
+              ));
         },
       ),
     );

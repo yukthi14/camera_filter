@@ -115,8 +115,7 @@ class _FirstPageState extends State<FirstPage>
                 border: Border.all(color: Colors.blueGrey, width: 2),
                 shape: BoxShape.circle,
                 image: const DecorationImage(
-                    image: NetworkImage(
-                        'https://i.pinimg.com/736x/a3/a5/ca/a3a5ca6fabbe2b740bd83cb9c7f82955.jpg'))),
+                    image: AssetImage('assets/profile.jpg'))),
           ),
 
           //user
@@ -216,8 +215,7 @@ class _FirstPageState extends State<FirstPage>
                           topRight: Radius.circular(2),
                           bottomLeft: Radius.circular(2)),
                       image: const DecorationImage(
-                          image: NetworkImage(
-                              'https://imgs.search.brave.com/c_WUBzbeA200_CFOtq_chzndCtPI0xekQfDrg_f-wQQ/rs:fit:476:225:1/g:ce/aHR0cHM6Ly90c2Ux/LmV4cGxpY2l0LmJp/bmcubmV0L3RoP2lk/PU9JUC5mejFEa2xP/OU1lNWN5UlRKazFH/akF3SGFIWSZwaWQ9/QXBp'))),
+                          image: AssetImage('assets/poster1.webp'))),
                 ),
                 SizedBox(
                         width: width * 0.8,
