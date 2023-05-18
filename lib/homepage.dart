@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:glass/glass.dart';
 import 'package:marquee/marquee.dart';
-import 'package:sizer/sizer.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({Key? key}) : super(key: key);
@@ -28,35 +27,35 @@ class _FirstPageState extends State<FirstPage>
       body: pageView(),
       backgroundColor: Colors.black,
       bottomNavigationBar: CurvedNavigationBar(
-        height: 7.h,
+        height: MediaQuery.of(context).size.height * 0.07,
         color: Colors.black,
         index: currentIndex,
         backgroundColor: Colors.white,
         items: [
           Icon(
             Icons.home_rounded,
-            size: 13.sp,
+            size: MediaQuery.of(context).size.width * 0.04,
             color: Colors.white,
           ),
           Icon(
             Icons.person,
             color: Colors.white,
-            size: 13.sp,
+            size: MediaQuery.of(context).size.width * 0.04,
           ),
           Icon(
             Icons.add_circle_rounded,
             color: Colors.white,
-            size: 13.sp,
+            size: MediaQuery.of(context).size.width * 0.04,
           ),
           Icon(
             Icons.assistant,
             color: Colors.white,
-            size: 13.sp,
+            size: MediaQuery.of(context).size.width * 0.04,
           ),
           Icon(
             Icons.settings_suggest_rounded,
             color: Colors.white,
-            size: 13.sp,
+            size: MediaQuery.of(context).size.width * 0.04,
           ),
         ],
         onTap: (index) {
@@ -82,7 +81,6 @@ class _FirstPageState extends State<FirstPage>
                     builder: (context) => CameraScreenPlugin(),
                     context: context));
           }
-
           setState(() {
             currentIndex = index;
           });
