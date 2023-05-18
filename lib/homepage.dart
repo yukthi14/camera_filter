@@ -1,10 +1,10 @@
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:camera_filter/camera_filters.dart';
 import 'package:camera_filter/constant.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:glass/glass.dart';
+import 'package:marquee/marquee.dart';
 import 'package:sizer/sizer.dart';
 
 class FirstPage extends StatefulWidget {
@@ -220,20 +220,29 @@ class _FirstPageState extends State<FirstPage>
                               'https://imgs.search.brave.com/c_WUBzbeA200_CFOtq_chzndCtPI0xekQfDrg_f-wQQ/rs:fit:476:225:1/g:ce/aHR0cHM6Ly90c2Ux/LmV4cGxpY2l0LmJp/bmcubmV0L3RoP2lk/PU9JUC5mejFEa2xP/OU1lNWN5UlRKazFH/akF3SGFIWSZwaWQ9/QXBp'))),
                 ),
                 SizedBox(
-                  width: width * 0.4,
-                  height: height * 0.02,
-                  child: AnimatedTextKit(
-                    repeatForever: true,
-                    animatedTexts: [
-                      TyperAnimatedText(songName,
-                          textAlign: TextAlign.right,
-                          speed: const Duration(milliseconds: 100),
-                          textStyle: const TextStyle(color: Colors.white)),
-                    ],
-                  ),
-                ).asGlass(
-                    tintColor: Colors.white,
-                    clipBorderRadius: BorderRadius.circular(100.0)),
+                        width: width * 0.8,
+                        height: height * 0.02,
+                        child: Marquee(
+                          text: songName,
+                          style: const TextStyle(
+                            color: Colors.white,
+                          ),
+                          blankSpace: 300,
+                          velocity: 100,
+                        )
+                        // AnimatedTextKit(
+                        //   repeatForever: true,
+                        //   animatedTexts: [
+                        //     TyperAnimatedText(songName,
+                        //         textAlign: TextAlign.right,
+                        //         speed: const Duration(milliseconds: 100),
+                        //         textStyle: const TextStyle(color: Colors.white)),
+                        //   ],
+                        // ),
+                        )
+                    .asGlass(
+                        tintColor: Colors.white,
+                        clipBorderRadius: BorderRadius.circular(100.0)),
               ],
             ),
           ),
