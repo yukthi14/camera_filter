@@ -1,7 +1,6 @@
 import 'package:camera_filter/camera_filters.dart';
 import 'package:camera_filter/constant.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:glass/glass.dart';
 import 'package:marquee/marquee.dart';
@@ -17,7 +16,6 @@ class _FirstPageState extends State<FirstPage>
     with SingleTickerProviderStateMixin {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -60,26 +58,29 @@ class _FirstPageState extends State<FirstPage>
         ],
         onTap: (index) {
           if (index == 2) {
-            Navigator.push(
-                context,
-                CupertinoDialogRoute(
-                    transitionDuration: const Duration(milliseconds: 900),
-                    transitionBuilder:
-                        (context, animation, secondaryAnimation, child) {
-                      const begin = Offset(0.0, 1.0);
-                      const end = Offset.zero;
-                      const curve = Curves.ease;
-
-                      var tween = Tween(begin: begin, end: end)
-                          .chain(CurveTween(curve: curve));
-
-                      return SlideTransition(
-                        position: animation.drive(tween),
-                        child: child,
-                      );
-                    },
-                    builder: (context) => CameraScreenPlugin(),
-                    context: context));
+            print(index);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => CameraScreenPlugin()));
+            // Navigator.push(
+            //     context,
+            //     CupertinoDialogRoute(
+            //         transitionDuration: const Duration(milliseconds: 900),
+            //         transitionBuilder:
+            //             (context, animation, secondaryAnimation, child) {
+            //           const begin = Offset(0.0, 1.0);
+            //           const end = Offset.zero;
+            //           const curve = Curves.ease;
+            //
+            //           var tween = Tween(begin: begin, end: end)
+            //               .chain(CurveTween(curve: curve));
+            //
+            //           return SlideTransition(
+            //             position: animation.drive(tween),
+            //             child: child,
+            //           );
+            //         },
+            //         builder: (context) => CameraScreenPlugin(),
+            //         context: context));
           }
           setState(() {
             currentIndex = index;
@@ -99,7 +100,7 @@ class _FirstPageState extends State<FirstPage>
             width: width,
             height: height * 0.8,
             child: Image.asset(
-              "assets/video.gif",
+              "assets/Delicate Animated Motivational Morning Quote Instagram Post.gif",
               fit: BoxFit.fill,
             ),
           ),
@@ -260,7 +261,7 @@ class _FirstPageState extends State<FirstPage>
       return Container(
         width: width,
         height: height,
-        color: Colors.purpleAccent,
+        color: Colors.white,
       );
     }
   }

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:camera/camera.dart';
 import 'package:camera_filter/constant.dart';
 import 'package:camera_filter/song_cutter.dart';
@@ -8,6 +9,7 @@ import 'package:camera_filter/src/edit_image_screen.dart';
 import 'package:camera_filter/src/filters.dart';
 import 'package:camera_filter/src/widgets/circularProgress.dart';
 import 'package:camera_filter/videoPlayer.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -51,6 +53,7 @@ class CameraScreenPlugin extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreenPlugin>
     with TickerProviderStateMixin, WidgetsBindingObserver {
+  late List<GlobalKey<FlipCardState>> _cardKeys = [];
   late AnimationController controller;
 
   CameraController? _controller;
@@ -123,7 +126,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
         setState(_updateScale);
       });
     _rotationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 5))
+        AnimationController(vsync: this, duration: const Duration(seconds: 5))
           ..addListener(() {
             setState(_updateRotation);
             if (_rotation > 5) {
@@ -131,7 +134,8 @@ class _CameraScreenState extends State<CameraScreenPlugin>
               _rotationController!.forward();
             }
           });
-
+    _cardKeys = List.generate(lang.length, (_) => GlobalKey<FlipCardState>());
+    startFlipping();
     super.initState();
     if (sp.read("flashCount") != null) {
       flashCount.value = sp.read("flashCount");
@@ -142,9 +146,26 @@ class _CameraScreenState extends State<CameraScreenPlugin>
     initCamera();
   }
 
+  void startFlipping() {
+    for (int i = 0; i < _cardKeys.length; i++) {
+      final int cardIndex = i;
+      const int flipCount =
+          50; // Number of times to flip between front and back
+      const int delay = 2; // Delay in seconds for each card
+      for (int j = 0; j <= flipCount; j++) {
+        Future.delayed(Duration(seconds: delay * j), () {
+          if (_cardKeys[cardIndex].currentState != null) {
+            _cardKeys[cardIndex].currentState?.toggleCard();
+          }
+        });
+      }
+    }
+  }
+
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    controller.dispose();
     _controller!.dispose();
     super.dispose();
   }
@@ -346,7 +367,7 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                               }),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
 
@@ -356,10 +377,6 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                         height: 5.h,
                         child: MaterialButton(
                           shape: const CircleBorder(),
-                          child: const Icon(
-                            Icons.cameraswitch_rounded,
-                            color: Colors.white,
-                          ),
                           onPressed: () {
                             if (_controller!.description.lensDirection ==
                                 CameraLensDirection.front) {
@@ -373,6 +390,10 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                             }
                           },
                           padding: const EdgeInsets.all(5),
+                          child: const Icon(
+                            Icons.cameraswitch_rounded,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -523,12 +544,6 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                           duration: const Duration(milliseconds: 150),
                           child: MaterialButton(
                             shape: const CircleBorder(),
-                            child: Icon(
-                              slide
-                                  ? Icons.keyboard_arrow_up
-                                  : Icons.keyboard_arrow_down,
-                              color: Colors.white,
-                            ),
                             onPressed: () {
                               setState(() {
                                 slide = !slide;
@@ -538,6 +553,12 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                               });
                             },
                             padding: const EdgeInsets.all(5),
+                            child: Icon(
+                              slide
+                                  ? Icons.keyboard_arrow_up
+                                  : Icons.keyboard_arrow_down,
+                              color: Colors.white,
+                            ),
                           )),
                     ],
                   ).asGlass(
@@ -983,76 +1004,233 @@ class _CameraScreenState extends State<CameraScreenPlugin>
   }
 
   Widget musicPage() {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.7,
-      decoration: const BoxDecoration(
-          color: Colors.black54,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(50), topRight: Radius.circular(50))),
-      child: ListView.builder(
-        itemCount: musicName.length,
-        itemBuilder: (context, index) {
-          return GestureDetector(
-              onTap: () {
-                setState(() {
-                  selectedSong = index.toString();
-
-                  showCupertinoModalPopup(
-                      context: context,
-                      builder: (BuildContext builder) {
-                        return SongCutter(
-                          value: index,
-                        );
-                      });
-                });
-              },
-              child: SizedBox(
-                width: 10.w,
-                height: 10.h,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.09),
-                      width: 13.w,
-                      height: 13.h,
-                      child: Image.asset(posterImage[index]),
-                    ),
-                    Column(
+    return Stack(
+      children: [
+        Container(
+          height: MediaQuery.of(context).size.height * 0.8,
+          decoration: const BoxDecoration(
+              color: Colors.black54,
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50), topRight: Radius.circular(50))),
+          child: ListView.builder(
+            itemCount: musicName.length,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      selectedSong = index.toString();
+                      showCupertinoModalPopup(
+                          context: context,
+                          builder: (BuildContext builder) {
+                            return SongCutter(
+                              value: index,
+                            );
+                          });
+                    });
+                  },
+                  child: SizedBox(
+                    width: 10.w,
+                    height: 10.h,
+                    // color: Colors.white,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
                           margin: EdgeInsets.only(
-                              right: MediaQuery.of(context).size.width * 0.05,
-                              top: MediaQuery.of(context).size.height * 0.02),
-                          width: MediaQuery.of(context).size.width * 0.65,
-                          height: MediaQuery.of(context).size.height * 0.03,
-                          child: DefaultTextStyle(
-                            style: TextStyle(
-                                fontSize: 13.sp, color: Colors.white60),
-                            child: Text(musicName[index]),
-                          ),
+                              left: MediaQuery.of(context).size.width * 0.09),
+                          width: 13.w,
+                          height: 13.h,
+                          child: Image.asset(posterImage[index]),
                         ),
-                        Container(
-                          margin: EdgeInsets.only(
-                              right: MediaQuery.of(context).size.width * 0.05,
-                              bottom:
-                                  MediaQuery.of(context).size.height * 0.01),
-                          width: MediaQuery.of(context).size.width * 0.65,
-                          height: MediaQuery.of(context).size.height * 0.03,
-                          child: DefaultTextStyle(
-                            style: TextStyle(
-                                fontSize: 10.sp, color: Colors.white38),
-                            child: Text(musicArtists[index]),
-                          ),
-                        ),
+                        Column(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                  right:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                  top: MediaQuery.of(context).size.height *
+                                      0.02),
+                              width: MediaQuery.of(context).size.width * 0.65,
+                              height: MediaQuery.of(context).size.height * 0.03,
+                              child: DefaultTextStyle(
+                                style: TextStyle(
+                                    fontSize: 13.sp, color: Colors.white60),
+                                child: Text(musicName[index]),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  right:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                  bottom: MediaQuery.of(context).size.height *
+                                      0.01),
+                              width: MediaQuery.of(context).size.width * 0.65,
+                              height: MediaQuery.of(context).size.height * 0.03,
+                              child: DefaultTextStyle(
+                                style: TextStyle(
+                                    fontSize: 10.sp, color: Colors.white38),
+                                child: Text(musicArtists[index]),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
-                    )
-                  ],
+                    ),
+                  ));
+            },
+          ),
+        ),
+        Padding(
+            padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.height * 0.01,
+                left: MediaQuery.of(context).size.width * 0.73),
+            child: MaterialButton(
+              onPressed: () {
+                _dialogBuilder(context);
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.2,
+                height: MediaQuery.of(context).size.height * 0.03,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.white, width: 1.5),
+                  borderRadius: BorderRadius.circular(20),
                 ),
-              ));
-        },
-      ),
+                child: const Center(
+                  child: DefaultTextStyle(
+                    style: TextStyle(color: Colors.white, fontSize: 12),
+                    child: Text(
+                      'Type',
+                    ),
+                  ),
+                ),
+              ),
+            )
+            // ElevatedButton(
+            //   style: ElevatedButton.styleFrom(
+            //     backgroundColor: Colors.black,
+            //   ),
+            //   onPressed: () {
+            //     _dialogBuilder(context);
+            //   },
+            //   child: const Text(
+            //     'Type',
+            //     style: TextStyle(
+            //       fontSize: 20,
+            //       color: Colors.white,
+            //     ),
+            //   ),
+            // ),
+            ),
+      ],
+    );
+  }
+
+  _dialogBuilder(BuildContext context) {
+    langEnglish.sort();
+    return showDialog(
+      context: context,
+      builder: (
+        BuildContext context,
+      ) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          backgroundColor: Colors.black,
+          title: const Text(
+            "Select",
+            style: TextStyle(color: Colors.white, fontSize: 28),
+          ),
+          content: SizedBox(
+            width: MediaQuery.of(context).size.width * 1,
+            height: MediaQuery.of(context).size.height * 0.7,
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: lang.length,
+                itemBuilder: (context, index) {
+                  double w = MediaQuery.of(context).size.width * 0.6;
+                  // if (langEnglish[index] == 'All') {
+                  //   return Container(
+                  //     margin: EdgeInsets.only(
+                  //         bottom: MediaQuery.of(context).size.height * 0.01,
+                  //         right: MediaQuery.of(context).size.width * 0.05),
+                  //     width: MediaQuery.of(context).size.width * 0.05,
+                  //     height: MediaQuery.of(context).size.height * 0.03,
+                  //     decoration: BoxDecoration(
+                  //       color: Colors.white54,
+                  //       borderRadius: BorderRadius.circular(10),
+                  //     ),
+                  //     child: Center(
+                  //       child: Text(
+                  //         langEnglish[index],
+                  //         style: const TextStyle(
+                  //             fontSize: 16,
+                  //             color: Colors.black,
+                  //             fontWeight: FontWeight.bold),
+                  //       ),
+                  //     ),
+                  //   );
+                  // }
+                  return FlipCard(
+                    flipOnTouch: false, // Disable manual flipping
+                    onFlip: () {}, // No-op callback for manual flipping
+                    key: _cardKeys[index],
+                    fill: Fill
+                        .fillBack, // Fill the back side of the card to make in the same size as the front.
+                    direction: FlipDirection.HORIZONTAL, // default
+                    side: CardSide.FRONT, // The side to initially display.
+                    front: MaterialButton(
+                      onPressed: () {},
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        height: MediaQuery.of(context).size.height * 0.03,
+                        decoration: BoxDecoration(
+                          color: Colors.white54,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: Text(
+                            langEnglish[index],
+                            style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                    back: MaterialButton(
+                      onPressed: () {},
+                      child: Container(
+                        margin: const EdgeInsets.only(left: 12),
+                        decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        width: MediaQuery.of(context).size.width * 0.7,
+                        height: MediaQuery.of(context).size.height * 0.03,
+                        child: Center(
+                          child: AnimatedTextKit(
+                            repeatForever: true,
+                            animatedTexts: [
+                              TyperAnimatedText(lang[index],
+                                  textAlign: TextAlign.left,
+                                  speed: const Duration(milliseconds: 100),
+                                  textStyle: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    autoFlipDuration: const Duration(
+                        seconds:
+                            5), // The flip effect will work automatically after the 2 seconds
+                  );
+                }),
+          ),
+        );
+      },
     );
   }
 }
