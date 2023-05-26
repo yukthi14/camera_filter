@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:camera_filter/audio_slider.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
@@ -53,9 +54,20 @@ class _SongCutterState extends State<SongCutter> {
                 ),
               ),
             ),
+            // Container(
+            //   margin: EdgeInsets.only(
+            //       top: MediaQuery.of(context).size.height * 0.02),
+            //   width: MediaQuery.of(context).size.width,
+            //   height: MediaQuery.of(context).size.height * 0.05,
+            //   child: Center(
+            //     child: Text('',
+            //       style: TextStyle(fontSize: 25, color: Colors.white),
+            //     ),
+            //   ),
+            // ),
             Container(
               margin: EdgeInsets.only(
-                top: 0.1.h,
+                top: 0.5.h,
               ),
               width: MediaQuery.of(context).size.width,
               child: Image.asset(posterImage[widget.value]),
@@ -74,12 +86,40 @@ class _SongCutterState extends State<SongCutter> {
                         setState(() => playing = false);
                       }
                     } catch (e) {
-                      print(e.toString());
+                      if (kDebugMode) {
+                        print(e.toString());
+                      }
                     }
                   },
-                  child: Icon(
-                    playing ? Icons.pause : Icons.play_arrow,
-                    color: Colors.white,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.2,
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white54,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.white70,
+                          offset: Offset(
+                            1.0,
+                            1.0,
+                          ),
+                          blurRadius: 10.0,
+                          spreadRadius: 6.0,
+                        ), //BoxShadow
+                        BoxShadow(
+                          color: Colors.white54,
+                          offset: Offset(0.0, 0.0),
+                          blurRadius: 0.0,
+                          spreadRadius: 0.0,
+                        ), //BoxShadow
+                      ],
+                    ),
+                    child: Icon(
+                      playing ? Icons.pause : Icons.play_arrow,
+                      color: Colors.black,
+                      size: 40,
+                    ),
                   ),
                 ),
               ),

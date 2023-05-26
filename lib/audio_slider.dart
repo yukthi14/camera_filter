@@ -46,10 +46,15 @@ class WaveSliderState extends State<WaveSlider> {
   void initState() {
     super.initState();
 
-    var shortSize = MediaQueryData.fromWindow(WidgetsBinding.instance!.window).size.shortestSide;
+    var shortSize = MediaQueryData.fromWindow(WidgetsBinding.instance.window)
+        .size
+        .shortestSide;
 
-    widthSlider = (widget.widthWaveSlider < 50) ? (shortSize - 2 - 40) : widget.widthWaveSlider;
-    heightSlider = (widget.heightWaveSlider < 50) ? 100 : widget.heightWaveSlider;
+    widthSlider = (widget.widthWaveSlider < 50)
+        ? (shortSize - 2 - 40)
+        : widget.widthWaveSlider;
+    heightSlider =
+        (widget.heightWaveSlider < 50) ? 100 : widget.heightWaveSlider;
     barEndPosition = widthSlider - selectBarWidth;
 
     Random r = Random();
@@ -60,19 +65,26 @@ class WaveSliderState extends State<WaveSlider> {
   }
 
   double _getBarStartPosition() {
-    return ((barEndPosition) < barStartPosition) ? barEndPosition : barStartPosition;
+    return ((barEndPosition) < barStartPosition)
+        ? barEndPosition
+        : barStartPosition;
   }
 
   double _getBarEndPosition() {
-    return ((barStartPosition + selectBarWidth) > barEndPosition) ? (barStartPosition + selectBarWidth) : barEndPosition;
+    return ((barStartPosition + selectBarWidth) > barEndPosition)
+        ? (barStartPosition + selectBarWidth)
+        : barEndPosition;
   }
 
   int _getStartTime() {
-    return (_getBarStartPosition() / (widthSlider / widget.duration)).toInt();
+    return _getBarStartPosition() ~/ (widthSlider / widget.duration);
   }
 
   int _getEndTime() {
-    return ((_getBarEndPosition() + selectBarWidth) / (widthSlider / widget.duration)).ceilToDouble().toInt();
+    return ((_getBarEndPosition() + selectBarWidth) /
+            (widthSlider / widget.duration))
+        .ceilToDouble()
+        .toInt();
   }
 
   String _timeFormatter(int second) {
@@ -85,7 +97,9 @@ class WaveSliderState extends State<WaveSlider> {
     durations.add(duration.inMinutes);
     durations.add(duration.inSeconds);
 
-    return durations.map((seg) => seg.remainder(60).toString().padLeft(2, '0')).join(':');
+    return durations
+        .map((seg) => seg.remainder(60).toString().padLeft(2, '0'))
+        .join(':');
   }
 
   @override
@@ -99,9 +113,11 @@ class WaveSliderState extends State<WaveSlider> {
         children: [
           Row(
             children: [
-              Text(_timeFormatter(_getStartTime()), style: TextStyle(color: widget.positionTextColor)),
+              Text(_timeFormatter(_getStartTime()),
+                  style: TextStyle(color: widget.positionTextColor)),
               Expanded(child: Container()),
-              Text(_timeFormatter(_getEndTime()), style: TextStyle(color: widget.positionTextColor)),
+              Text(_timeFormatter(_getEndTime()),
+                  style: TextStyle(color: widget.positionTextColor)),
             ],
           ),
           Expanded(
@@ -115,7 +131,8 @@ class WaveSliderState extends State<WaveSlider> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: bars.map((int height) {
-                      Color color = i >= barStartPosition / barWidth && i <= barEndPosition / barWidth
+                      Color color = i >= barStartPosition / barWidth &&
+                              i <= barEndPosition / barWidth
                           ? widget.wavActiveColor
                           : widget.wavDeactiveColor;
                       i++;
@@ -133,7 +150,8 @@ class WaveSliderState extends State<WaveSlider> {
                     width: selectBarWidth,
                     callback: (DragUpdateDetails details) {
                       var tmp = barStartPosition + details.delta.dx;
-                      if ((barEndPosition - selectBarWidth) > tmp && (tmp >= 0)) {
+                      if ((barEndPosition - selectBarWidth) > tmp &&
+                          (tmp >= 0)) {
                         setState(() {
                           barStartPosition += details.delta.dx;
                         });
@@ -145,11 +163,14 @@ class WaveSliderState extends State<WaveSlider> {
                   ),
                   CenterBar(
                     position: _getBarStartPosition() + selectBarWidth,
-                    width: _getBarEndPosition() - _getBarStartPosition() - selectBarWidth,
+                    width: _getBarEndPosition() -
+                        _getBarStartPosition() -
+                        selectBarWidth,
                     callback: (details) {
                       var tmp1 = barStartPosition + details.delta.dx;
                       var tmp2 = barEndPosition + details.delta.dx;
-                      if ((tmp1 > 0) && ((tmp2 + selectBarWidth) < widthSlider)) {
+                      if ((tmp1 > 0) &&
+                          ((tmp2 + selectBarWidth) < widthSlider)) {
                         setState(() {
                           barStartPosition += details.delta.dx;
                           barEndPosition += details.delta.dx;
@@ -167,7 +188,8 @@ class WaveSliderState extends State<WaveSlider> {
                     width: selectBarWidth,
                     callback: (DragUpdateDetails details) {
                       var tmp = barEndPosition + details.delta.dx;
-                      if ((barStartPosition + selectBarWidth) < tmp && (tmp + selectBarWidth) <= widthSlider) {
+                      if ((barStartPosition + selectBarWidth) < tmp &&
+                          (tmp + selectBarWidth) <= widthSlider) {
                         setState(() {
                           barEndPosition += details.delta.dx;
                         });
@@ -193,7 +215,12 @@ class CenterBar extends StatelessWidget {
   final GestureDragUpdateCallback callback;
   final GestureDragEndCallback? callbackEnd;
 
-  const CenterBar({Key? key, required this.position, required this.width, required this.callback, required this.callbackEnd})
+  const CenterBar(
+      {Key? key,
+      required this.position,
+      required this.width,
+      required this.callback,
+      required this.callbackEnd})
       : super(key: key);
 
   @override
@@ -228,7 +255,12 @@ class Bar extends StatelessWidget {
   final GestureDragEndCallback? callbackEnd;
 
   const Bar(
-      {Key? key, required this.position, required this.width, required this.callback, required this.callbackEnd, this.colorBG})
+      {Key? key,
+      required this.position,
+      required this.width,
+      required this.callback,
+      required this.callbackEnd,
+      this.colorBG})
       : super(key: key);
 
   @override

@@ -978,21 +978,21 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                 ],
                 Container(
                   constraints: const BoxConstraints.expand(),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
                   child: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 300),
                     child: Container(
                       width: 70,
                       height: 70,
                       decoration: BoxDecoration(
-                          color: Color(0xffd51820),
+                          color: const Color(0xffd51820),
                           borderRadius: BorderRadius.circular(100)),
                     ).asGlass(
                         tintColor: Colors.transparent,
                         clipBorderRadius: BorderRadius.circular(100.0)),
-                    duration: Duration(milliseconds: 300),
-                  ),
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.white,
                   ),
                 ),
               ],
