@@ -697,27 +697,27 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                             Padding(
                               padding: const EdgeInsets.only(left: 6, right: 6),
                               child: SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.09,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.04,
                                 child: Center(
                                     child: Text(
                                   "1x",
                                   style: TextStyle(color: Colors.white),
                                 )),
-                                width: MediaQuery.of(context).size.width * 0.09,
-                                height:
-                                    MediaQuery.of(context).size.height * 0.04,
                               ).asGlass(
                                   tintColor: Colors.transparent,
                                   clipBorderRadius:
                                       BorderRadius.circular(50.0)),
                             ),
                             SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.09,
+                              height: MediaQuery.of(context).size.height * 0.04,
                               child: Center(
                                   child: Text(
                                 "2x",
                                 style: TextStyle(color: Colors.white),
                               )),
-                              width: MediaQuery.of(context).size.width * 0.09,
-                              height: MediaQuery.of(context).size.height * 0.04,
                             ).asGlass(
                                 tintColor: Colors.transparent,
                                 clipBorderRadius: BorderRadius.circular(100.0)),
@@ -1199,7 +1199,9 @@ class _CameraScreenState extends State<CameraScreenPlugin>
                       ),
                     ),
                     back: MaterialButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       child: Container(
                         margin: const EdgeInsets.only(left: 12),
                         decoration: BoxDecoration(

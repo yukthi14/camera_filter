@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
+
 bool rippleEffect = false;
 bool slide = false;
 bool selectTimer = false;
 bool slowMotion = false;
+bool autoPlay = false;
 bool fps = false;
 int currentIndex = 0;
 String selectedSong = "";
@@ -122,3 +125,13 @@ List lang = [
   "اردو",
   "português",
 ];
+List videoList = [
+  'assets/video/video1.mp4',
+  'assets/video/video2.mp4',
+  'assets/video/video3.mp4',
+  'assets/video/video4.mp4',
+  'assets/video/video6.mp4',
+];
+
+final PageController newController =
+    PageController(initialPage: 0, keepPage: false);

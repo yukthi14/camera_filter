@@ -1,7 +1,10 @@
 import 'package:camera_filter/camera_filters.dart';
 import 'package:camera_filter/constant.dart';
+import 'package:camera_filter/playvideo.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_shake_animated/flutter_shake_animated.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:glass/glass.dart';
 import 'package:marquee/marquee.dart';
 
@@ -14,10 +17,26 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage>
     with SingleTickerProviderStateMixin {
+  // initializeVideo(String videoPath, int index) {
+  //   controller = VideoPlayerController.asset('assets/video/video1.mp4');
+  //   controller = VideoPlayerController.asset(videoPath);
+  //   controller.initialize().then((value) {
+  //     setState(() {});
+  //   });
+  //   // controller.setLooping(true);
+  //   // controller.play();
+  // }
+
   @override
   void initState() {
+    // TODO: implement initState
+    fToast = FToast();
+    fToast.init(context);
     super.initState();
   }
+
+  bool isVisible = true;
+  late FToast fToast;
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +77,6 @@ class _FirstPageState extends State<FirstPage>
         ],
         onTap: (index) {
           if (index == 2) {
-            print(index);
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => CameraScreenPlugin()));
             // Navigator.push(
@@ -96,12 +114,133 @@ class _FirstPageState extends State<FirstPage>
     if (currentIndex == 0) {
       return Stack(
         children: [
-          SizedBox(
-            width: width,
-            height: height * 0.8,
-            child: Image.asset(
-              "assets/Delicate Animated Motivational Morning Quote Instagram Post.gif",
-              fit: BoxFit.fill,
+          PageView.builder(
+              itemCount: videoList.length,
+              controller: newController,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (context, index) {
+                return PlayingVideo(
+                  pathh: videoList[index],
+                  index: index,
+                );
+              }),
+          Positioned(
+            top: MediaQuery.of(context).size.height * 0.2,
+            right: MediaQuery.of(context).size.width * 0.01,
+            child: Row(
+              children: [
+                Visibility(
+                  visible: !isVisible,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isVisible = true;
+                        if (autoPlay = !autoPlay) {
+                          // Fluttertoast.showToast(
+                          //   msg: 'AutoScroll Enabled',
+                          // );
+                          fToast.showToast(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0, vertical: 12.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  color: Colors.black,
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Text(
+                                      "AutoScroll Enabled",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              toastDuration: const Duration(seconds: 2),
+                              positionedToastBuilder: (context, child) {
+                                return Positioned(
+                                  left:
+                                      MediaQuery.of(context).size.width * 0.35,
+                                  top:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  child: child,
+                                );
+                              });
+                        } else {
+                          fToast.showToast(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 24.0, vertical: 12.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25.0),
+                                  color: Colors.black,
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: const [
+                                    Text(
+                                      "AutoScroll Disabled",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              toastDuration: const Duration(seconds: 2),
+                              positionedToastBuilder: (context, child) {
+                                return Positioned(
+                                  left:
+                                      MediaQuery.of(context).size.width * 0.35,
+                                  top:
+                                      MediaQuery.of(context).size.height * 0.05,
+                                  child: child,
+                                );
+                              });
+                        }
+                      });
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.18,
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      decoration: const BoxDecoration(
+                        color: Colors.black38,
+                        image: DecorationImage(
+                            image: AssetImage('assets/scroll-icon.gif'),
+                            fit: BoxFit.fill),
+                      ),
+                    ).asGlass(
+                        tintColor: Colors.black87,
+                        clipBorderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(100),
+                          bottomLeft: Radius.circular(100),
+                        )),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isVisible = !isVisible;
+                    });
+                  },
+                  child: ShakeWidget(
+                    duration: const Duration(seconds: 10),
+                    shakeConstant: ShakeLittleConstant1(),
+                    autoPlay: true,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.02,
+                      height: MediaQuery.of(context).size.height * 0.1,
+                      color: Colors.white54,
+                    ).asGlass(
+                        tintColor: Colors.white,
+                        clipBorderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(100),
+                          bottomLeft: Radius.circular(100),
+                          bottomRight: Radius.circular(100),
+                          topRight: Radius.circular(100),
+                        )),
+                  ),
+                ),
+              ],
             ),
           ),
           Container(
