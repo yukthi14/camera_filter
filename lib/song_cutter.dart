@@ -25,6 +25,8 @@ class _SongCutterState extends State<SongCutter> {
     super.dispose();
   }
 
+  final Duration duration = Duration();
+  // DateTime dateTime=DateTime.parse();
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -46,10 +48,19 @@ class _SongCutterState extends State<SongCutter> {
                   widthWaveSlider: 300,
                   duration: 12.0,
                   callbackStart: (duration) {
-                    print("Start $duration");
+                    setState(() {
+                      Duration();
+                    });
+                    print(
+                      "Start $duration",
+                    );
                   },
                   callbackEnd: (duration) {
                     print("End $duration");
+                    Text(
+                      "End $duration",
+                      style: TextStyle(color: Colors.white),
+                    );
                   },
                 ),
               ),
@@ -124,6 +135,17 @@ class _SongCutterState extends State<SongCutter> {
                 ),
               ),
             ),
+            Container(
+              margin: EdgeInsets.only(
+                  top: MediaQuery.of(context).size.height * 0.52,
+                  left: MediaQuery.of(context).size.width * 0.12),
+              width: MediaQuery.of(context).size.width * 0.1,
+              height: MediaQuery.of(context).size.height * 0.02,
+              child: Text(
+                '$duration',
+                style: TextStyle(color: Colors.white),
+              ),
+            )
           ],
         ),
       ),
