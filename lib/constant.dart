@@ -12,7 +12,7 @@ bool containerOpened = true;
 String poster =
     'https://imgs.search.brave.com/c_WUBzbeA200_CFOtq_chzndCtPI0xekQfDrg_f-wQQ/rs:fit:476:225:1/g:ce/aHR0cHM6Ly90c2Ux/LmV4cGxpY2l0LmJp/bmcubmV0L3RoP2lk/PU9JUC5mejFEa2xP/OU1lNWN5UlRKazFH/akF3SGFIWSZwaWQ9/QXBp';
 String songName = 'Kesariya - Arijit Singh';
-
+String title = "Let's sign you in";
 List musicName = [
   'Kesariya',
   'Ranjha',
